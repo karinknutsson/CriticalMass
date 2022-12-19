@@ -34,9 +34,6 @@ class ofApp : public ofBaseApp{
         ofxCvGrayscaleImage diff;
         ofxCvFloatImage diffFloat;
         ofxCvFloatImage bufferFloat;
-        
-        // ofImage apple;
-        // Apple* apple;
     
         vector<Apple> apples;
         vector<Apple> applesToRemove;

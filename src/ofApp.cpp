@@ -1,5 +1,4 @@
 #include "ofApp.h"
-#include "apple.h"
 #include <vector>
 
 //--------------------------------------------------------------
@@ -79,7 +78,7 @@ void ofApp::update(){
         // create apples with minimum width 40 px and maximum width 160 px
         int width = ofRandom(40, 160);
         int height = width * 1.15;
-        apples.push_back(Apple(width, height, ofRandom(ofGetWidth() - width), ofRandom(ofGetHeight() - height)));
+        apples.push_back(Apple(width, height, ofRandom(ofGetWidth() - width), ofRandom(ofGetHeight() - height * 2)));
         
         // reset current time
         currTime = ofGetElapsedTimeMillis();
@@ -103,7 +102,7 @@ void ofApp::update(){
                 // get pixel value
                 float value = pixels[x + w * y];
                 
-                if (value >= 2.5 && !apples.empty()) {
+                if (value >= 2 && !apples.empty()) {
                     for (int i = apples.size() - 1; i >= 0; i--) {
                         
                         // if movement is close enough to an apple, delete it
@@ -122,6 +121,7 @@ void ofApp::draw(){
     
     // draw webcam input
     vidGrabber.draw(0, 0);
+    // vidGrabber.draw(camWidth, 0, -camWidth, camHeight);
 
     for (auto apple = apples.begin(); apple != apples.end(); ++apple)
     {
