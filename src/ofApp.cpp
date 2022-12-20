@@ -26,6 +26,8 @@ void ofApp::setup(){
     vidGrabber.setDeviceID(0);
     vidGrabber.setDesiredFrameRate(30);
     vidGrabber.initGrabber(camWidth, camHeight);
+    
+    sound.load("arcade-sound.wav");
 }
 
 //--------------------------------------------------------------
@@ -116,6 +118,7 @@ void ofApp::update(){
                         // if movement is close enough to an apple, delete it
                         if ((xMirrored > apples.at(i).x && xMirrored < apples.at(i).x + apples.at(i).s) && (y > apples.at(i).y && y < apples.at(i).y + apples.at(i).s)) {
                             apples.erase(apples.begin() + i);
+                            sound.play();
                         }
                     }
                 }

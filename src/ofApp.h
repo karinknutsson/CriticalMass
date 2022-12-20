@@ -54,4 +54,6 @@ class ofApp : public ofBaseApp{
     
         int currTime;
         int delay;
+    
+        ofSoundPlayer sound;
 };
