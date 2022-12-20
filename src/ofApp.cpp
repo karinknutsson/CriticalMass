@@ -8,7 +8,7 @@ void ofApp::setup(){
     currTime = ofGetElapsedTimeMillis();
     
     // delay in milliseconds between each apple
-    delay = 3000;
+    delay = 2000;
 
     //get back a list of devices
     vector<ofVideoDevice> devices = vidGrabber.listDevices();
@@ -43,11 +43,17 @@ void ofApp::update(){
         // get pixel data from video and set in image
         image.setFromPixels(vidGrabber.getPixels());
         
+        // resize image
+        image.resize(640, 360);
+
         // blur image
-        image.blurGaussian(10);
+        image.blur(11);
         
         // convert to grayscale
         grayImage = image;
+        
+        // increase contrast
+        grayImage.contrastStretch();
         
         // if previous grayImage exists, perform calculations
         if (grayImagePrev.bAllocated) {
@@ -78,8 +84,8 @@ void ofApp::update(){
     
     if (ofGetElapsedTimeMillis() > currTime + delay) {
         
-        // create apples with minimum width 40 px and maximum width 160 px
-        int width = ofRandom(40, 160);
+        // create apples and add to container
+        int width = ofRandom(50, 180);
         int height = width * 1.15;
         apples.push_back(Apple(width, height, ofRandom(ofGetWidth() - width), ofRandom(ofGetHeight() - height * 2)));
         
