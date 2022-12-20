@@ -56,5 +56,7 @@ class ofApp : public ofBaseApp{
         int delay;
     
         ofSoundPlayer sound;
+        ofSoundPlayer gameOverSound;
+    
         bool gameOver;
 };

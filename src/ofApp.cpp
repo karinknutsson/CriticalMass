@@ -29,6 +29,7 @@ void ofApp::setup(){
     vidGrabber.initGrabber(camWidth, camHeight);
     
     sound.load("arcade-sound.wav");
+    gameOverSound.load("game-over.wav");
 }
 
 //--------------------------------------------------------------
@@ -38,6 +39,7 @@ void ofApp::update(){
             
         if (viruses.size() > 12) {
             gameOver = true;
+            gameOverSound.play();
         }
         
         ofBackground(0);
