@@ -7,7 +7,7 @@ void ofApp::setup(){
     camHeight = 720;
     currTime = ofGetElapsedTimeMillis();
     
-    // delay in milliseconds between each apple
+    // delay in milliseconds between each virus
     delay = 500;
 
     //get back a list of devices
@@ -83,9 +83,9 @@ void ofApp::update(){
     
     if (ofGetElapsedTimeMillis() > currTime + delay) {
         
-        // create apples and add to container
+        // create viruss and add to container
         int size = ofRandom(50, 180);
-        apples.push_back(Apple(ofRandom(ofGetWidth() - size), ofRandom(ofGetHeight() - size * 2), size));
+        viruses.push_back(Virus(ofRandom(ofGetWidth() - size), ofRandom(ofGetHeight() - size * 2), size));
         
         // reset current time
         currTime = ofGetElapsedTimeMillis();
@@ -109,15 +109,15 @@ void ofApp::update(){
                 // get pixel value
                 float value = pixels[x + w * y];
                 
-                if (value >= 1.5 && !apples.empty()) {
-                    for (int i = apples.size() - 1; i >= 0; i--) {
+                if (value >= 1.5 && !viruses.empty()) {
+                    for (int i = viruses.size() - 1; i >= 0; i--) {
                         
                         // since video is mirrored, this needs to be adjusted for when comparing x position
                         int xMirrored = camWidth - x;
                         
-                        // if movement is close enough to an apple, delete it
-                        if ((xMirrored > apples.at(i).x && xMirrored < apples.at(i).x + apples.at(i).s) && (y > apples.at(i).y && y < apples.at(i).y + apples.at(i).s)) {
-                            apples.erase(apples.begin() + i);
+                        // if movement is close enough to an virus, delete it
+                        if ((xMirrored > viruses.at(i).x && xMirrored < viruses.at(i).x + viruses.at(i).s) && (y > viruses.at(i).y && y < viruses.at(i).y + viruses.at(i).s)) {
+                            viruses.erase(viruses.begin() + i);
                             sound.play();
                         }
                     }
@@ -133,10 +133,10 @@ void ofApp::draw(){
     // draw mirrored webcam input
     vidGrabber.draw(camWidth, 0, -camWidth, camHeight);
 
-    for (auto apple = apples.begin(); apple != apples.end(); ++apple)
+    for (auto virus = viruses.begin(); virus != viruses.end(); ++virus)
     {
-        // draw each apple
-        apple->draw();
+        // draw each virus
+        virus->draw();
     }
 
 }
