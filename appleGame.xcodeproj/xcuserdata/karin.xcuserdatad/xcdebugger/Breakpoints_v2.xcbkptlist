@@ -16,7 +16,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "20"
             endingLineNumber = "20"
-            landmarkName = "Apple(size, xPos, yPos)"
+            landmarkName = "Apple(xPos, yPos, size)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

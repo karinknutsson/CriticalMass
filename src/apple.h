@@ -18,7 +18,7 @@ class Apple {
             y = yPos;
             s = size;
             
-            img.load("golden-torus.png");
+            img.load("virus.png");
         }
     
         void draw() {
