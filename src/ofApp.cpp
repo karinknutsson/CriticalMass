@@ -43,6 +43,9 @@ void ofApp::update(){
         // get pixel data from video and set in image
         image.setFromPixels(vidGrabber.getPixels());
         
+        // blur image
+        image.blurGaussian(10);
+        
         // convert to grayscale
         grayImage = image;
         
