@@ -105,8 +105,11 @@ void ofApp::update(){
                 if (value >= 2 && !apples.empty()) {
                     for (int i = apples.size() - 1; i >= 0; i--) {
                         
+                        // since video is mirrored, this needs to be adjusted for when comparing x position
+                        int xMirrored = camWidth - x;
+                        
                         // if movement is close enough to an apple, delete it
-                        if ((x > apples.at(i).x && x < apples.at(i).x + apples.at(i).w) && (y > apples.at(i).y && y < apples.at(i).y + apples.at(i).w)) {
+                        if ((xMirrored > apples.at(i).x && xMirrored < apples.at(i).x + apples.at(i).w) && (y > apples.at(i).y && y < apples.at(i).y + apples.at(i).w)) {
                             apples.erase(apples.begin() + i);
                         }
                     }
@@ -119,9 +122,8 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-    // draw webcam input
-    vidGrabber.draw(0, 0);
-    // vidGrabber.draw(camWidth, 0, -camWidth, camHeight);
+    // draw mirrored webcam input
+    vidGrabber.draw(camWidth, 0, -camWidth, camHeight);
 
     for (auto apple = apples.begin(); apple != apples.end(); ++apple)
     {
