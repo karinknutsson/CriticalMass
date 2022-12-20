@@ -8,22 +8,20 @@
 class Apple {
     public:
     
-        int w;
-        int h;
         int x;
         int y;
+        int s;
         ofImage img;
     
-        Apple(int width, int height, int xPos, int yPos){
-            w = width;
-            h = height;
+        Apple(int xPos, int yPos, int size){
             x = xPos;
             y = yPos;
+            s = size;
             
-            img.load("apple.png");
+            img.load("golden-torus.png");
         }
     
         void draw() {
-            this->img.draw(x, y, w, h);
+            this->img.draw(x, y, s, s);
         }
 };

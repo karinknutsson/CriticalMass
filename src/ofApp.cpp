@@ -8,7 +8,7 @@ void ofApp::setup(){
     currTime = ofGetElapsedTimeMillis();
     
     // delay in milliseconds between each apple
-    delay = 1000;
+    delay = 500;
 
     //get back a list of devices
     vector<ofVideoDevice> devices = vidGrabber.listDevices();
@@ -82,9 +82,8 @@ void ofApp::update(){
     if (ofGetElapsedTimeMillis() > currTime + delay) {
         
         // create apples and add to container
-        int width = ofRandom(50, 180);
-        int height = width * 1.15;
-        apples.push_back(Apple(width, height, ofRandom(ofGetWidth() - width), ofRandom(ofGetHeight() - height * 2)));
+        int size = ofRandom(50, 180);
+        apples.push_back(Apple(ofRandom(ofGetWidth() - size), ofRandom(ofGetHeight() - size * 2), size));
         
         // reset current time
         currTime = ofGetElapsedTimeMillis();
@@ -115,7 +114,7 @@ void ofApp::update(){
                         int xMirrored = camWidth - x;
                         
                         // if movement is close enough to an apple, delete it
-                        if ((xMirrored > apples.at(i).x && xMirrored < apples.at(i).x + apples.at(i).w) && (y > apples.at(i).y && y < apples.at(i).y + apples.at(i).w)) {
+                        if ((xMirrored > apples.at(i).x && xMirrored < apples.at(i).x + apples.at(i).s) && (y > apples.at(i).y && y < apples.at(i).y + apples.at(i).s)) {
                             apples.erase(apples.begin() + i);
                         }
                     }
