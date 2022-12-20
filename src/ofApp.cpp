@@ -8,7 +8,7 @@ void ofApp::setup(){
     currTime = ofGetElapsedTimeMillis();
     
     // delay in milliseconds between each apple
-    delay = 2000;
+    delay = 1000;
 
     //get back a list of devices
     vector<ofVideoDevice> devices = vidGrabber.listDevices();
@@ -108,7 +108,7 @@ void ofApp::update(){
                 // get pixel value
                 float value = pixels[x + w * y];
                 
-                if (value >= 2 && !apples.empty()) {
+                if (value >= 1.5 && !apples.empty()) {
                     for (int i = apples.size() - 1; i >= 0; i--) {
                         
                         // since video is mirrored, this needs to be adjusted for when comparing x position
