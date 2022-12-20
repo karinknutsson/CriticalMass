@@ -42,9 +42,6 @@ void ofApp::update(){
         
         // get pixel data from video and set in image
         image.setFromPixels(vidGrabber.getPixels());
-        
-        // resize image
-        image.resize(640, 360);
 
         // blur image
         image.blur(11);
