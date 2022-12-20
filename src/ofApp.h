@@ -24,19 +24,33 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
+        // webcam input
         ofVideoGrabber vidGrabber;
+    
+        // camera dimensions
         int camWidth;
         int camHeight;
         
+        // current video frame
         ofxCvColorImage image;
+    
+        // current video frame in grayscale
         ofxCvGrayscaleImage grayImage;
+    
+        // previous video frame in grayscale
         ofxCvGrayscaleImage grayImagePrev;
+    
+        // absolute difference of current and previous frame
         ofxCvGrayscaleImage diff;
+    
+        // amplified difference of current and previous frame
         ofxCvFloatImage diffFloat;
+    
+        // buffer image: stores all differences in movement, with damping
         ofxCvFloatImage bufferFloat;
     
+        // apple container
         vector<Apple> apples;
-        vector<Apple> applesToRemove;
     
         int currTime;
         int delay;
