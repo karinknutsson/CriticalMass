@@ -177,13 +177,13 @@ void ofApp::draw(){
         ofSetColor(255, 99, 234);
         
         // draw score
-        eightBitWonder.drawString(std::to_string(score), 20, 120);
+        eightBitWonder.drawString(std::to_string(score), 20, 60);
         
     } else if (gameOver) {
         
         // magenta color for text
         ofSetColor(255, 99, 234);
-        eightBitWonder.drawString("GAME OVER", 440, (camHeight / 2) - 24);
+        eightBitWonder.drawString("GAME OVER\n\nSCORE " + std::to_string(score), 440, (camHeight / 2) - 48);
         
     }
 
