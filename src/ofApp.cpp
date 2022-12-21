@@ -9,7 +9,7 @@ void ofApp::setup(){
     currTime = ofGetElapsedTimeMillis();
     
     // delay in milliseconds between each virus
-    delay = 500;
+    delay = 1000;
 
     //get back a list of devices
     vector<ofVideoDevice> devices = vidGrabber.listDevices();
@@ -140,6 +140,9 @@ void ofApp::update(){
             }
         }
     }
+    
+    // decrement delay so game gets increasingly more difficult
+    delay -= 1;
 }
 
 //--------------------------------------------------------------
