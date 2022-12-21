@@ -24,4 +24,8 @@ class Virus {
         void draw() {
             this->img.draw(x, y, s, s);
         }
+    
+        void drawDeath() {
+            this->img.draw(x, y, s * 1.2, s * 1.2);
+        }
 };
