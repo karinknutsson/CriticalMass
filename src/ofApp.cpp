@@ -3,10 +3,12 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    gameStart = false;
     gameOver = false;
     camWidth = 1280;
     camHeight = 720;
     currTime = ofGetElapsedTimeMillis();
+    ofBackground(0);
     
     // delay in milliseconds between each virus
     delay = 1000;
@@ -36,8 +38,17 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
     
-    if (!gameOver) {
-            
+    // update camera input
+    vidGrabber.update();
+    
+    // wait to start game until camera is on
+    if (!gameStart && vidGrabber.isFrameNew()) {
+        gameStart = true;
+    }
+    
+    if (gameStart && !gameOver) {
+        
+        // cutoff for when game is over
         if (viruses.size() > 5) {
             
             gameOver = true;
@@ -45,9 +56,6 @@ void ofApp::update(){
             gameOverSound.play();
             
         }
-        
-        ofBackground(0);
-        vidGrabber.update();
         
         if (vidGrabber.isFrameNew()) {
             
@@ -148,7 +156,7 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-    if (!gameOver) {
+    if (gameStart && !gameOver) {
         
         // draw mirrored webcam input
         vidGrabber.draw(camWidth, 0, -camWidth, camHeight);
@@ -159,9 +167,8 @@ void ofApp::draw(){
             virus->draw();
         }
         
-    } else {
+    } else if (gameOver) {
         
-        ofBackground(0);
         ofSetColor(255, 99, 234);
         eightBitWonder.drawString("GAME OVER", 440, (camHeight / 2) - 24);
         
