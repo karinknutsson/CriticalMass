@@ -3,12 +3,15 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    gameStart = false;
+    gameOver = false;
     camWidth = 1280;
     camHeight = 720;
     currTime = ofGetElapsedTimeMillis();
+    ofBackground(0);
     
-    // delay in milliseconds between each apple
-    delay = 500;
+    // delay in milliseconds between each virus
+    delay = 1000;
 
     //get back a list of devices
     vector<ofVideoDevice> devices = vidGrabber.listDevices();
@@ -28,115 +31,147 @@ void ofApp::setup(){
     vidGrabber.initGrabber(camWidth, camHeight);
     
     sound.load("arcade-sound.wav");
+    gameOverSound.load("game-over.wav");
+    eightBitWonder.load("8-bit-wonder.ttf", 32, true, true);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    ofBackground(0);
+    
+    // update camera input
     vidGrabber.update();
     
-    if (vidGrabber.isFrameNew()) {
+    // wait to start game until camera is on
+    if (!gameStart && vidGrabber.isFrameNew()) {
+        gameStart = true;
+    }
+    
+    if (gameStart && !gameOver) {
         
-        // if grayImage exists, store it for next iteration
-        if (grayImage.bAllocated) {
-            grayImagePrev = grayImage;
+        // cutoff for when game is over
+        if (viruses.size() > 5) {
+            
+            gameOver = true;
+            vidGrabber.close();
+            gameOverSound.play();
+            
         }
         
-        // get pixel data from video and set in image
-        image.setFromPixels(vidGrabber.getPixels());
+        if (vidGrabber.isFrameNew()) {
+            
+            // if grayImage exists, store it for next iteration
+            if (grayImage.bAllocated) {
+                grayImagePrev = grayImage;
+            }
+            
+            // get pixel data from video and set in image
+            image.setFromPixels(vidGrabber.getPixels());
 
-        // blur image
-        image.blur(11);
-        
-        // convert to grayscale
-        grayImage = image;
-        
-        // increase contrast
-        grayImage.contrastStretch();
-        
-        // if previous grayImage exists, perform calculations
-        if (grayImagePrev.bAllocated) {
+            // blur image
+            image.blur(11);
             
-            // set diff to be difference between current and previous grayImage
-            diff.absDiff(grayImage, grayImagePrev);
+            // convert to grayscale
+            grayImage = image;
             
-            // convert to float image & amplify
-            diffFloat = diff;
-            diffFloat *= 5.0;
+            // increase contrast
+            grayImage.contrastStretch();
             
-            // update the accumulation buffer
-            if (!bufferFloat.bAllocated) {
+            // if previous grayImage exists, perform calculations
+            if (grayImagePrev.bAllocated) {
                 
-                // if bufferFloat does not exist, set it equal to diffFloat
-                bufferFloat = diffFloat;
-            } else {
+                // set diff to be difference between current and previous grayImage
+                diff.absDiff(grayImage, grayImagePrev);
                 
-                // if it does exist, first dampen the bufferFloat
-                bufferFloat *= 0.85;
+                // convert to float image & amplify
+                diffFloat = diff;
+                diffFloat *= 5.0;
                 
-                // add current difference to the buffer
-                bufferFloat += diffFloat;
+                // update the accumulation buffer
+                if (!bufferFloat.bAllocated) {
+                    
+                    // if bufferFloat does not exist, set it equal to diffFloat
+                    bufferFloat = diffFloat;
+                } else {
+                    
+                    // if it does exist, first dampen the bufferFloat
+                    bufferFloat *= 0.85;
+                    
+                    // add current difference to the buffer
+                    bufferFloat += diffFloat;
+                }
             }
         }
-    }
 
-    
-    if (ofGetElapsedTimeMillis() > currTime + delay) {
         
-        // create apples and add to container
-        int size = ofRandom(50, 180);
-        apples.push_back(Apple(ofRandom(ofGetWidth() - size), ofRandom(ofGetHeight() - size * 2), size));
+        if (ofGetElapsedTimeMillis() > currTime + delay) {
+            
+            // create viruss and add to container
+            int size = ofRandom(50, 180);
+            viruses.push_back(Virus(ofRandom(ofGetWidth() - size), ofRandom(ofGetHeight() - size * 2), size));
+            
+            // reset current time
+            currTime = ofGetElapsedTimeMillis();
+        }
         
-        // reset current time
-        currTime = ofGetElapsedTimeMillis();
-    }
-    
-    
-    // if diffFloat exists,
-    if (diffFloat.bAllocated) {
         
-        // get image dimensions
-        int w = grayImage.width;
-        int h = grayImage.height;
-    
-        // get bufferFloat pixels
-        float *pixels = bufferFloat.getPixelsAsFloats();
+        // if diffFloat exists,
+        if (diffFloat.bAllocated) {
+            
+            // get image dimensions
+            int w = grayImage.width;
+            int h = grayImage.height;
         
-        // scan all pixels
-        for (int y = 0; y < h; y++) {
-            for (int x = 0; x < w; x++) {
-                
-                // get pixel value
-                float value = pixels[x + w * y];
-                
-                if (value >= 1.5 && !apples.empty()) {
-                    for (int i = apples.size() - 1; i >= 0; i--) {
-                        
-                        // since video is mirrored, this needs to be adjusted for when comparing x position
-                        int xMirrored = camWidth - x;
-                        
-                        // if movement is close enough to an apple, delete it
-                        if ((xMirrored > apples.at(i).x && xMirrored < apples.at(i).x + apples.at(i).s) && (y > apples.at(i).y && y < apples.at(i).y + apples.at(i).s)) {
-                            apples.erase(apples.begin() + i);
-                            sound.play();
+            // get bufferFloat pixels
+            float *pixels = bufferFloat.getPixelsAsFloats();
+            
+            // scan all pixels
+            for (int y = 0; y < h; y++) {
+                for (int x = 0; x < w; x++) {
+                    
+                    // get pixel value
+                    float value = pixels[x + w * y];
+                    
+                    if (value >= 1.5 && !viruses.empty()) {
+                        for (int i = viruses.size() - 1; i >= 0; i--) {
+                            
+                            // since video is mirrored, this needs to be adjusted for when comparing x position
+                            int xMirrored = camWidth - x;
+                            
+                            // if movement is close enough to an virus, delete it
+                            if ((xMirrored > viruses.at(i).x && xMirrored < viruses.at(i).x + viruses.at(i).s) && (y > viruses.at(i).y && y < viruses.at(i).y + viruses.at(i).s)) {
+                                viruses.erase(viruses.begin() + i);
+                                sound.play();
+                            }
                         }
                     }
                 }
             }
         }
     }
+    
+    // decrement delay so game gets increasingly more difficult
+    delay -= 1;
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-    // draw mirrored webcam input
-    vidGrabber.draw(camWidth, 0, -camWidth, camHeight);
+    if (gameStart && !gameOver) {
+        
+        // draw mirrored webcam input
+        vidGrabber.draw(camWidth, 0, -camWidth, camHeight);
 
-    for (auto apple = apples.begin(); apple != apples.end(); ++apple)
-    {
-        // draw each apple
-        apple->draw();
+        for (auto virus = viruses.begin(); virus != viruses.end(); ++virus)
+        {
+            // draw each virus
+            virus->draw();
+        }
+        
+    } else if (gameOver) {
+        
+        ofSetColor(255, 99, 234);
+        eightBitWonder.drawString("GAME OVER", 440, (camHeight / 2) - 24);
+        
     }
 
 }

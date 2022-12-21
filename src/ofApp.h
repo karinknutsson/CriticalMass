@@ -2,7 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxOpenCv.h"
-#include "apple.h"
+#include "virus.h"
 #include <vector>
 
 class ofApp : public ofBaseApp{
@@ -49,11 +49,17 @@ class ofApp : public ofBaseApp{
         // buffer image: stores all differences in movement, with damping
         ofxCvFloatImage bufferFloat;
     
-        // apple container
-        vector<Apple> apples;
+        // virus container
+        vector<Virus> viruses;
     
         int currTime;
         int delay;
     
         ofSoundPlayer sound;
+        ofSoundPlayer gameOverSound;
+    
+        bool gameStart;
+        bool gameOver;
+    
+        ofTrueTypeFont eightBitWonder;
 };
