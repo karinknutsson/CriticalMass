@@ -153,12 +153,24 @@ void ofApp::update(){
                                 sound.play();
                                 score += 10;
                             }
+
                         }
                         
                     }
                 }
             }
         }
+        
+    }
+    
+    // iterate through dying viruses
+    for (int i = dyingViruses.size() - 1; i >= 0; i--) {
+        
+        // if dying animation is done, delete it
+        if (dyingViruses.at(i).resizeFactor < 0) {
+            dyingViruses.erase(dyingViruses.begin() + i);
+        }
+        
     }
     
     // decrement delay so game gets increasingly more difficult
@@ -184,6 +196,7 @@ void ofApp::draw(){
         {
             virus->drawDeath();
         }
+        
         
         // magenta color for text
         ofSetColor(255, 99, 234);
