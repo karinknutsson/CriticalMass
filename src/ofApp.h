@@ -52,15 +52,17 @@ class ofApp : public ofBaseApp{
         // virus container
         vector<Virus> viruses;
     
+        // variables to keep track of time
         int currTime;
         int delay;
     
+        // sound and text variables
         ofSoundPlayer sound;
         ofSoundPlayer gameOverSound;
+        ofTrueTypeFont eightBitWonder;
     
+        // game variables
         bool gameStart;
         bool gameOver;
-    
-        ofTrueTypeFont eightBitWonder;
         int score;
 };

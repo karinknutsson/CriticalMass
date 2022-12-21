@@ -44,6 +44,7 @@ void ofApp::update(){
     // update camera input
     vidGrabber.update();
     
+    // neded for video not to have magenta tint
     ofSetColor(255);
     
     // wait to start game until camera is on
@@ -54,7 +55,7 @@ void ofApp::update(){
     if (gameStart && !gameOver) {
         
         // cutoff for when game is over
-        if (viruses.size() > 5) {
+        if (viruses.size() > 12) {
             
             gameOver = true;
             vidGrabber.close();
