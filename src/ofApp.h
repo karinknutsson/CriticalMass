@@ -59,4 +59,6 @@ class ofApp : public ofBaseApp{
         ofSoundPlayer gameOverSound;
     
         bool gameOver;
+    
+        ofTrueTypeFont eightBitWonder;
 };

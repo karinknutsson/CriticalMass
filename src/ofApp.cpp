@@ -30,6 +30,7 @@ void ofApp::setup(){
     
     sound.load("arcade-sound.wav");
     gameOverSound.load("game-over.wav");
+    eightBitWonder.load("8-bit-wonder.ttf", 32, true, true);
 }
 
 //--------------------------------------------------------------
@@ -37,9 +38,12 @@ void ofApp::update(){
     
     if (!gameOver) {
             
-        if (viruses.size() > 12) {
+        if (viruses.size() > 5) {
+            
             gameOver = true;
+            vidGrabber.close();
             gameOverSound.play();
+            
         }
         
         ofBackground(0);
@@ -155,6 +159,8 @@ void ofApp::draw(){
     } else {
         
         ofBackground(0);
+        ofSetColor(255, 99, 234);
+        eightBitWonder.drawString("GAME OVER", 440, (camHeight / 2) - 24);
         
     }
 
