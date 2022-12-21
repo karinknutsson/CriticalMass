@@ -5,9 +5,12 @@
 void ofApp::setup(){
     gameStart = false;
     gameOver = false;
+    score = 0;
     camWidth = 1280;
     camHeight = 720;
     currTime = ofGetElapsedTimeMillis();
+    
+    // black background
     ofBackground(0);
     
     // delay in milliseconds between each virus
@@ -41,6 +44,9 @@ void ofApp::update(){
     // update camera input
     vidGrabber.update();
     
+    // neded for video not to have magenta tint
+    ofSetColor(255);
+    
     // wait to start game until camera is on
     if (!gameStart && vidGrabber.isFrameNew()) {
         gameStart = true;
@@ -49,7 +55,7 @@ void ofApp::update(){
     if (gameStart && !gameOver) {
         
         // cutoff for when game is over
-        if (viruses.size() > 5) {
+        if (viruses.size() > 12) {
             
             gameOver = true;
             vidGrabber.close();
@@ -141,6 +147,7 @@ void ofApp::update(){
                             if ((xMirrored > viruses.at(i).x && xMirrored < viruses.at(i).x + viruses.at(i).s) && (y > viruses.at(i).y && y < viruses.at(i).y + viruses.at(i).s)) {
                                 viruses.erase(viruses.begin() + i);
                                 sound.play();
+                                score += 10;
                             }
                         }
                     }
@@ -167,10 +174,17 @@ void ofApp::draw(){
             virus->draw();
         }
         
+        // magenta color for text
+        ofSetColor(255, 99, 234);
+        
+        // draw score
+        eightBitWonder.drawString(std::to_string(score), 20, 60);
+        
     } else if (gameOver) {
         
+        // magenta color for text
         ofSetColor(255, 99, 234);
-        eightBitWonder.drawString("GAME OVER", 440, (camHeight / 2) - 24);
+        eightBitWonder.drawString("GAME OVER\n\nSCORE " + std::to_string(score), 440, (camHeight / 2) - 48);
         
     }
 
