@@ -6,26 +6,39 @@
 //
 
 class Virus {
+    
     public:
     
         int x;
         int y;
         int s;
         ofImage img;
+        float resizeFactor;
     
         Virus(int xPos, int yPos, int size){
+            
             x = xPos;
             y = yPos;
             s = size;
+            resizeFactor = 1.0;
             
             img.load("virus.png");
+            
         }
     
         void draw() {
+            
             this->img.draw(x, y, s, s);
+            
         }
     
         void drawDeath() {
-            this->img.draw(x, y, s * 1.2, s * 1.2);
+            
+            if (resizeFactor > 0) {
+                this->img.draw(x, y, s * resizeFactor, s * resizeFactor);
+                this->resizeFactor -= 0.1;
+            }
+            
         }
+    
 };
