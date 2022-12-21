@@ -62,4 +62,5 @@ class ofApp : public ofBaseApp{
         bool gameOver;
     
         ofTrueTypeFont eightBitWonder;
+        int score;
 };
