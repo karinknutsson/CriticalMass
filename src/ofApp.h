@@ -11,7 +11,7 @@ class ofApp : public ofBaseApp{
 		void setup();
 		void update();
 		void draw();
-
+    
 		void keyPressed(int key);
 		void keyReleased(int key);
 		void mouseMoved(int x, int y );
@@ -51,6 +51,9 @@ class ofApp : public ofBaseApp{
     
         // virus container
         vector<Virus> viruses;
+    
+        // dying virus container
+        vector<Virus> dyingViruses;
     
         // variables to keep track of time
         int currTime;

@@ -137,7 +137,10 @@ void ofApp::update(){
                     // get pixel value
                     float value = pixels[x + w * y];
                     
+                    // cutoff value for movement
                     if (value >= 1.5 && !viruses.empty()) {
+                        
+                        // iterate through all viruses
                         for (int i = viruses.size() - 1; i >= 0; i--) {
                             
                             // since video is mirrored, this needs to be adjusted for when comparing x position
@@ -145,15 +148,29 @@ void ofApp::update(){
                             
                             // if movement is close enough to an virus, delete it
                             if ((xMirrored > viruses.at(i).x && xMirrored < viruses.at(i).x + viruses.at(i).s) && (y > viruses.at(i).y && y < viruses.at(i).y + viruses.at(i).s)) {
+                                dyingViruses.push_back(viruses.at(i));
                                 viruses.erase(viruses.begin() + i);
                                 sound.play();
                                 score += 10;
                             }
+
                         }
+                        
                     }
                 }
             }
         }
+        
+    }
+    
+    // iterate through dying viruses
+    for (int i = dyingViruses.size() - 1; i >= 0; i--) {
+        
+        // if dying animation is done, delete it
+        if (dyingViruses.at(i).resizeFactor < 0) {
+            dyingViruses.erase(dyingViruses.begin() + i);
+        }
+        
     }
     
     // decrement delay so game gets increasingly more difficult
@@ -168,10 +185,16 @@ void ofApp::draw(){
         // draw mirrored webcam input
         vidGrabber.draw(camWidth, 0, -camWidth, camHeight);
 
+        // draw each living virus
         for (auto virus = viruses.begin(); virus != viruses.end(); ++virus)
         {
-            // draw each virus
             virus->draw();
+        }
+        
+        // draw each dying virus
+        for (auto virus = dyingViruses.begin(); virus != dyingViruses.end(); ++virus)
+        {
+            virus->drawDeath();
         }
         
         // magenta color for text
@@ -184,6 +207,8 @@ void ofApp::draw(){
         
         // magenta color for text
         ofSetColor(255, 99, 234);
+        
+        // draw game over text
         eightBitWonder.drawString("GAME OVER\n\nSCORE " + std::to_string(score), 440, (camHeight / 2) - 48);
         
     }
