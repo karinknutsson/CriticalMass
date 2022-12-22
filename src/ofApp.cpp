@@ -197,7 +197,6 @@ void ofApp::draw(){
             virus->drawDeath();
         }
         
-        
         // magenta color for text
         ofSetColor(255, 99, 234);
         

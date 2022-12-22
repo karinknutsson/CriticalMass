@@ -38,6 +38,7 @@ class Virus {
             
             if (!shrink) {
                 
+                // at first, the virus will grow, until it reaches 60% of its volume
                 if (resizeFactor < 1.5) {
                     
                     int xAdjusted = x - s * (resizeFactor - 1) / 2;
@@ -69,6 +70,8 @@ class Virus {
                 }
                 
                 img.draw(xAdjusted, yAdjusted, s * resizeFactor, s * resizeFactor);
+                
+                // now the virus will shrink, until it is no longer visible
                 resizeFactor -= 0.2;
                 
             }
