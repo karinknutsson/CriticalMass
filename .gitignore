@@ -1,5 +1,6 @@
 *.make
 *.xcconfig
+.DS_Store
 bin/virusGameDebug.app/
 build/
 virusGame.xcodeproj/
