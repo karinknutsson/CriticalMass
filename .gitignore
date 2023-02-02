@@ -1,0 +1,5 @@
+*.make
+*.xcconfig
+bin/virusGameDebug.app/
+build/
+virusGame.xcodeproj/
