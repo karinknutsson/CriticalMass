@@ -3,4 +3,5 @@
 .DS_Store
 bin/virusGameDebug.app/
 build/
+obj/
 virusGame.xcodeproj/
