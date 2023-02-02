@@ -60,7 +60,7 @@ class ofApp : public ofBaseApp{
         int delay;
     
         // sound and text variables
-        ofSoundPlayer sound;
+        ofSoundPlayer virusKillSound;
         ofSoundPlayer gameOverSound;
         ofTrueTypeFont eightBitWonder;
     

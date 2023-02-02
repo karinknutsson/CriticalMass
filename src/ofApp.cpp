@@ -34,7 +34,8 @@ void ofApp::setup(){
     vidGrabber.setDesiredFrameRate(30);
     vidGrabber.initGrabber(camWidth, camHeight);
     
-    sound.load("arcade-sound.wav");
+    virusKillSound.load("arcade-sound.wav");
+    virusKillSound.setMultiPlay(true);
     gameOverSound.load("game-over.wav");
     eightBitWonder.load("8-bit-wonder.ttf", 32, true, true);
 }
@@ -142,7 +143,7 @@ void ofApp::update(){
                             if ((xMirrored > viruses.at(i).x && xMirrored < viruses.at(i).x + viruses.at(i).s) && (y > viruses.at(i).y && y < viruses.at(i).y + viruses.at(i).s)) {
                                 dyingViruses.push_back(viruses.at(i));
                                 viruses.erase(viruses.begin() + i);
-                                sound.play();
+                                virusKillSound.play();
                                 score += 10;
                             }
 
@@ -206,11 +207,8 @@ void ofApp::draw(){
             virus->drawDeath();
         }
         
-        // magenta color for text
-        ofSetColor(255, 99, 234);
-        
         // draw score
-        eightBitWonder.drawString(std::to_string(score), 20, 60);
+        eightBitWonder.drawString(std::to_string(score), 20, camHeight - 30);
         
     } else {
         
