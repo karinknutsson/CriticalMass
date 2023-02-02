@@ -62,11 +62,19 @@ class ofApp : public ofBaseApp{
         // sound and text variables
         ofSoundPlayer virusKillSound;
         ofSoundPlayer gameOverSound;
-        ofTrueTypeFont eightBitWonder;
+        ofSoundPlayer shortBeep;
+        ofSoundPlayer longBeep;
+        ofTrueTypeFont eightBitWonder32;
+        ofTrueTypeFont eightBitWonder48;
     
         // game variables
         bool gameStart;
         bool gameOver;
         bool countDown;
+        float countDownStartTime;
         int score;
+        bool beep1played;
+        bool beep2played;
+        bool beep3played;
+        bool longBeepPlayed;
 };

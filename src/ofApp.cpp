@@ -3,6 +3,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    
     gameStart = false;
     gameOver = false;
     countDown = true;
@@ -11,33 +12,34 @@ void ofApp::setup(){
     camHeight = 720;
     currentTime = ofGetElapsedTimeMillis();
     
+    beep1played = false;
+    beep2played = false;
+    beep3played = false;
+    longBeepPlayed = false;
+    
     // black background
     ofBackground(0);
     
     // delay in milliseconds between each virus
     delay = 1000;
 
-    //get back a list of devices
+    // get back a list of devices
     vector<ofVideoDevice> devices = vidGrabber.listDevices();
 
-    for(size_t i = 0; i < devices.size(); i++){
-        if (devices[i].bAvailable) {
-            //log the device
-            ofLogNotice() << devices[i].id << ": " << devices[i].deviceName;
-        } else {
-            //log the device and note it as unavailable
-            ofLogNotice() << devices[i].id << ": " << devices[i].deviceName << " - unavailable ";
-        }
-    }
-
+    // set device id to first one found & initialize
     vidGrabber.setDeviceID(0);
     vidGrabber.setDesiredFrameRate(30);
     vidGrabber.initGrabber(camWidth, camHeight);
     
+    // load sounds and fonts
     virusKillSound.load("arcade-sound.wav");
     virusKillSound.setMultiPlay(true);
     gameOverSound.load("game-over.wav");
-    eightBitWonder.load("8-bit-wonder.ttf", 32, true, true);
+    shortBeep.load("short-beep.mp3");
+    longBeep.load("long-beep.mp3");
+    eightBitWonder32.load("8-bit-wonder.ttf", 32, true, true);
+    eightBitWonder48.load("8-bit-wonder.ttf", 48, true, true);
+    
 }
 
 //--------------------------------------------------------------
@@ -53,11 +55,14 @@ void ofApp::update(){
     ofSetColor(255);
     
     // wait to start game until camera is on
-    if (!gameStart && vidGrabber.isFrameNew()) {
-        gameStart = true;
-    }
+//    if (!gameStart && vidGrabber.isFrameNew()) {
+//
+//        countDownStartTime = ofGetElapsedTimef();
+//        gameStart = true;
+//
+//    }
     
-    if (!countDown && gameStart && !gameOver) {
+    if (!countDown && !gameOver) {
         
         // cutoff for when game is over
         if (viruses.size() > 12) {
@@ -186,9 +191,67 @@ void ofApp::draw(){
     
     if (countDown) {
         
-        // TODO: countdown text & sound
+        // magenta tint screen
+        ofSetColor(255, 99, 234);
+
+        // draw mirrored webcam input
+        vidGrabber.draw(camWidth, 0, -camWidth, camHeight);
+
+        // float elapsedTime = ofGetElapsedTimef() - countDownStartTime;
+
+        // set white color for text
+        ofSetColor(255);
         
-        countDown = false;
+//        std::cout << "count down start: " << countDownStartTime;
+//        std::cout << "\n";
+//        std::cout << "time since beginning: " << ofGetElapsedTimef();
+//        std::cout << "\n";
+//        std::cout << "elapsed time: " << elapsedTime;
+//        std::cout << "\n";
+        
+        // draw countdown & play sounds
+        if (ofGetElapsedTimef() < 6) {
+            
+            if (!beep1played) {
+                shortBeep.play();
+                beep1played = true;
+            }
+            
+            eightBitWonder48.drawString("1", (camWidth / 2) - 48, (camHeight / 2) - 48);
+            
+        } else if (ofGetElapsedTimef() < 8) {
+
+            if (!beep2played) {
+                shortBeep.play();
+                beep2played = true;
+            }
+            
+            eightBitWonder48.drawString("2", (camWidth / 2) - 48, (camHeight / 2) - 48);
+
+        } else if (ofGetElapsedTimef() < 10) {
+
+            if (!beep3played) {
+                shortBeep.play();
+                beep3played = true;
+            }
+            
+            eightBitWonder48.drawString("3", (camWidth / 2) - 48, (camHeight / 2) - 48);
+
+        }
+        else if (ofGetElapsedTimef() < 14) {
+            
+            if (!longBeepPlayed) {
+                longBeep.play();
+                longBeepPlayed = true;
+            }
+            
+            eightBitWonder48.drawString("GET READY", (camWidth / 2) - 48, (camHeight / 2) - 48);
+            
+        } else {
+
+            countDown = false;
+
+        }
         
     } else if (!gameOver) {
         
@@ -208,7 +271,7 @@ void ofApp::draw(){
         }
         
         // draw score
-        eightBitWonder.drawString(std::to_string(score), 20, camHeight - 30);
+        eightBitWonder32.drawString(std::to_string(score), 20, camHeight - 30);
         
     } else {
         
@@ -216,7 +279,7 @@ void ofApp::draw(){
         ofSetColor(255, 99, 234);
         
         // draw game over text
-        eightBitWonder.drawString("GAME OVER\n\nSCORE " + std::to_string(score), 440, (camHeight / 2) - 48);
+        eightBitWonder32.drawString("GAME OVER\n\nSCORE " + std::to_string(score), 440, (camHeight / 2) - 48);
         
     }
 
