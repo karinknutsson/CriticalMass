@@ -56,7 +56,7 @@ class ofApp : public ofBaseApp{
         vector<Virus> dyingViruses;
     
         // variables to keep track of time
-        int currTime;
+        int currentTime;
         int delay;
     
         // sound and text variables
@@ -67,5 +67,6 @@ class ofApp : public ofBaseApp{
         // game variables
         bool gameStart;
         bool gameOver;
+        bool countDown;
         int score;
 };

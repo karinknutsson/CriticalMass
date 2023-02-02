@@ -5,10 +5,11 @@
 void ofApp::setup(){
     gameStart = false;
     gameOver = false;
+    countDown = true;
     score = 0;
     camWidth = 1280;
     camHeight = 720;
-    currTime = ofGetElapsedTimeMillis();
+    currentTime = ofGetElapsedTimeMillis();
     
     // black background
     ofBackground(0);
@@ -41,6 +42,9 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
     
+    // update sound
+    ofSoundUpdate();
+    
     // update camera input
     vidGrabber.update();
     
@@ -52,7 +56,7 @@ void ofApp::update(){
         gameStart = true;
     }
     
-    if (gameStart && !gameOver) {
+    if (!countDown && gameStart && !gameOver) {
         
         // cutoff for when game is over
         if (viruses.size() > 12) {
@@ -107,18 +111,6 @@ void ofApp::update(){
                 }
             }
         }
-
-        
-        if (ofGetElapsedTimeMillis() > currTime + delay) {
-            
-            // create viruss and add to container
-            int size = ofRandom(50, 180);
-            viruses.push_back(Virus(ofRandom(ofGetWidth() - size), ofRandom(ofGetHeight() - size * 2), size));
-            
-            // reset current time
-            currTime = ofGetElapsedTimeMillis();
-        }
-        
         
         // if diffFloat exists,
         if (diffFloat.bAllocated) {
@@ -159,6 +151,17 @@ void ofApp::update(){
                     }
                 }
             }
+            
+            // add viruses over time
+            if (ofGetElapsedTimeMillis() > currentTime + delay) {
+                
+                // create viruses and add to container
+                int size = ofRandom(50, 180);
+                viruses.push_back(Virus(ofRandom(ofGetWidth() - size), ofRandom(ofGetHeight() - size * 2), size));
+                
+                // reset current time
+                currentTime = ofGetElapsedTimeMillis();
+            }
         }
         
     }
@@ -173,14 +176,20 @@ void ofApp::update(){
         
     }
     
-    // decrement delay so game gets increasingly more difficult
+    // decrement delay so game gets increasingly more difficult with time
     delay -= 1;
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-    if (gameStart && !gameOver) {
+    if (countDown) {
+        
+        // TODO: countdown text & sound
+        
+        countDown = false;
+        
+    } else if (!gameOver) {
         
         // draw mirrored webcam input
         vidGrabber.draw(camWidth, 0, -camWidth, camHeight);
@@ -203,7 +212,7 @@ void ofApp::draw(){
         // draw score
         eightBitWonder.drawString(std::to_string(score), 20, 60);
         
-    } else if (gameOver) {
+    } else {
         
         // magenta color for text
         ofSetColor(255, 99, 234);
