@@ -3,23 +3,23 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    
-    gameStart = false;
+
     gameOver = false;
     countDown = true;
     score = 0;
+    startGame = false;
     camWidth = 1280;
     camHeight = 720;
     currentTime = ofGetElapsedTimeMillis();
-    
+
     beep1played = false;
     beep2played = false;
     beep3played = false;
     longBeepPlayed = false;
-    
+
     // black background
     ofBackground(0);
-    
+
     // delay in milliseconds between each virus
     delay = 1000;
 
@@ -30,7 +30,7 @@ void ofApp::setup(){
     vidGrabber.setDeviceID(0);
     vidGrabber.setDesiredFrameRate(30);
     vidGrabber.initGrabber(camWidth, camHeight);
-    
+
     // load sounds and fonts
     virusKillSound.load("arcade-sound.wav");
     virusKillSound.setMultiPlay(true);
@@ -39,112 +39,113 @@ void ofApp::setup(){
     longBeep.load("long-beep.mp3");
     eightBitWonder32.load("8-bit-wonder.ttf", 32, true, true);
     eightBitWonder48.load("8-bit-wonder.ttf", 48, true, true);
-    
+
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    
+
     // update sound
     ofSoundUpdate();
-    
+
     // update camera input
     vidGrabber.update();
-    
-    // neded for video not to have magenta tint
+
+    // needed for video not to have magenta tint
     ofSetColor(255);
-    
+
     // wait to start game until camera is on
-//    if (!gameStart && vidGrabber.isFrameNew()) {
-//
-//        countDownStartTime = ofGetElapsedTimef();
-//        gameStart = true;
-//
-//    }
-    
+    if (!startGame && vidGrabber.isFrameNew()) {
+
+        startGame = true;
+        countDownStartTime = ofGetElapsedTimef();
+
+    }
+
+    // start game after count down
     if (!countDown && !gameOver) {
-        
+
         // cutoff for when game is over
         if (viruses.size() > 12) {
-            
+
             gameOver = true;
             vidGrabber.close();
             gameOverSound.play();
-            
+
         }
-        
+
         if (vidGrabber.isFrameNew()) {
-            
+
             // if grayImage exists, store it for next iteration
             if (grayImage.bAllocated) {
                 grayImagePrev = grayImage;
             }
-            
+
             // get pixel data from video and set in image
             image.setFromPixels(vidGrabber.getPixels());
 
             // blur image
             image.blur(11);
-            
+
             // convert to grayscale
             grayImage = image;
-            
+
             // increase contrast
             grayImage.contrastStretch();
-            
+
             // if previous grayImage exists, perform calculations
             if (grayImagePrev.bAllocated) {
-                
+
                 // set diff to be difference between current and previous grayImage
                 diff.absDiff(grayImage, grayImagePrev);
-                
+
                 // convert to float image & amplify
                 diffFloat = diff;
                 diffFloat *= 5.0;
-                
+
                 // update the accumulation buffer
                 if (!bufferFloat.bAllocated) {
-                    
+
                     // if bufferFloat does not exist, set it equal to diffFloat
                     bufferFloat = diffFloat;
                 } else {
-                    
+
                     // if it does exist, first dampen the bufferFloat
                     bufferFloat *= 0.85;
-                    
+
                     // add current difference to the buffer
                     bufferFloat += diffFloat;
                 }
             }
         }
-        
+
         // if diffFloat exists,
         if (diffFloat.bAllocated) {
-            
+
             // get image dimensions
             int w = grayImage.width;
             int h = grayImage.height;
-        
+
             // get bufferFloat pixels
             float *pixels = bufferFloat.getPixelsAsFloats();
-            
+
             // scan all pixels
             for (int y = 0; y < h; y++) {
                 for (int x = 0; x < w; x++) {
-                    
+
                     // get pixel value
                     float value = pixels[x + w * y];
-                    
+
                     // cutoff value for movement
                     if (value >= 1.5 && !viruses.empty()) {
-                        
+
                         // iterate through all viruses
                         for (int i = viruses.size() - 1; i >= 0; i--) {
-                            
+
                             // since video is mirrored, this needs to be adjusted for when comparing x position
                             int xMirrored = camWidth - x;
-                            
-                            // if movement is close enough to an virus, delete it
+
+                            // if movement is close enough to an virus, it dies
                             if ((xMirrored > viruses.at(i).x && xMirrored < viruses.at(i).x + viruses.at(i).s) && (y > viruses.at(i).y && y < viruses.at(i).y + viruses.at(i).s)) {
                                 dyingViruses.push_back(viruses.at(i));
                                 viruses.erase(viruses.begin() + i);
@@ -153,134 +154,131 @@ void ofApp::update(){
                             }
 
                         }
-                        
+
                     }
                 }
             }
-            
+
             // add viruses over time
             if (ofGetElapsedTimeMillis() > currentTime + delay) {
-                
+
                 // create viruses and add to container
                 int size = ofRandom(50, 180);
                 viruses.push_back(Virus(ofRandom(ofGetWidth() - size), ofRandom(ofGetHeight() - size * 2), size));
-                
+
                 // reset current time
                 currentTime = ofGetElapsedTimeMillis();
             }
         }
-        
+
     }
-    
+
     // iterate through dying viruses
     for (int i = dyingViruses.size() - 1; i >= 0; i--) {
-        
+
         // if dying animation is done, delete it
         if (dyingViruses.at(i).resizeFactor < 0) {
             dyingViruses.erase(dyingViruses.begin() + i);
         }
-        
+
     }
-    
+
     // decrement delay so game gets increasingly more difficult with time
     delay -= 1;
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    
-    if (countDown) {
-        
-        // magenta tint screen
-        ofSetColor(255, 99, 234);
 
-        // draw mirrored webcam input
-        vidGrabber.draw(camWidth, 0, -camWidth, camHeight);
+    if (startGame) {
 
-        // float elapsedTime = ofGetElapsedTimef() - countDownStartTime;
+        if (countDown) {
 
-        // set white color for text
-        ofSetColor(255);
-        
-//        std::cout << "count down start: " << countDownStartTime;
-//        std::cout << "\n";
-//        std::cout << "time since beginning: " << ofGetElapsedTimef();
-//        std::cout << "\n";
-//        std::cout << "elapsed time: " << elapsedTime;
-//        std::cout << "\n";
-        
-        // draw countdown & play sounds
-        if (ofGetElapsedTimef() < 6) {
-            
-            if (!beep1played) {
-                shortBeep.play();
-                beep1played = true;
+            // magenta tint screen
+            ofSetColor(255, 99, 234);
+
+            // draw mirrored webcam input
+            vidGrabber.draw(camWidth, 0, -camWidth, camHeight);
+
+            // set white color for text
+            ofSetColor(255);
+
+            float elapsedTime = ofGetElapsedTimef() - countDownStartTime;
+
+            // draw countdown & play sounds
+            if (elapsedTime < 1) {
+
+                if (!beep1played) {
+                    shortBeep.play();
+                    beep1played = true;
+                }
+
+                eightBitWonder48.drawString("1", (camWidth / 2) - 48, (camHeight / 2) - 48);
+
+            } else if (elapsedTime < 2) {
+
+                if (!beep2played) {
+                    shortBeep.play();
+                    beep2played = true;
+                }
+
+                eightBitWonder48.drawString("2", (camWidth / 2) - 48, (camHeight / 2) - 48);
+
+            } else if (elapsedTime < 3) {
+
+                if (!beep3played) {
+                    shortBeep.play();
+                    beep3played = true;
+                }
+
+                eightBitWonder48.drawString("3", (camWidth / 2) - 48, (camHeight / 2) - 48);
+
             }
-            
-            eightBitWonder48.drawString("1", (camWidth / 2) - 48, (camHeight / 2) - 48);
-            
-        } else if (ofGetElapsedTimef() < 8) {
+            else if (elapsedTime < 5) {
 
-            if (!beep2played) {
-                shortBeep.play();
-                beep2played = true;
+                if (!longBeepPlayed) {
+                    longBeep.play();
+                    longBeepPlayed = true;
+                }
+
+                eightBitWonder48.drawString("GET READY", (camWidth / 2) - 360, (camHeight / 2) - 48);
+
+            } else {
+
+                countDown = false;
+
             }
-            
-            eightBitWonder48.drawString("2", (camWidth / 2) - 48, (camHeight / 2) - 48);
 
-        } else if (ofGetElapsedTimef() < 10) {
+        } else if (!gameOver) {
 
-            if (!beep3played) {
-                shortBeep.play();
-                beep3played = true;
+            // draw mirrored webcam input
+            vidGrabber.draw(camWidth, 0, -camWidth, camHeight);
+
+            // draw each living virus
+            for (auto virus = viruses.begin(); virus != viruses.end(); ++virus)
+            {
+                virus->draw();
             }
-            
-            eightBitWonder48.drawString("3", (camWidth / 2) - 48, (camHeight / 2) - 48);
 
-        }
-        else if (ofGetElapsedTimef() < 14) {
-            
-            if (!longBeepPlayed) {
-                longBeep.play();
-                longBeepPlayed = true;
+            // draw each dying virus
+            for (auto virus = dyingViruses.begin(); virus != dyingViruses.end(); ++virus)
+            {
+                virus->drawDeath();
             }
-            
-            eightBitWonder48.drawString("GET READY", (camWidth / 2) - 48, (camHeight / 2) - 48);
-            
+
+            // draw score
+            eightBitWonder32.drawString(std::to_string(score), 20, camHeight - 30);
+
         } else {
 
-            countDown = false;
+            // magenta color for text
+            ofSetColor(255, 99, 234);
+
+            // draw game over text
+            eightBitWonder32.drawString("GAME OVER\n\nSCORE " + std::to_string(score), 440, (camHeight / 2) - 48);
 
         }
-        
-    } else if (!gameOver) {
-        
-        // draw mirrored webcam input
-        vidGrabber.draw(camWidth, 0, -camWidth, camHeight);
 
-        // draw each living virus
-        for (auto virus = viruses.begin(); virus != viruses.end(); ++virus)
-        {
-            virus->draw();
-        }
-        
-        // draw each dying virus
-        for (auto virus = dyingViruses.begin(); virus != dyingViruses.end(); ++virus)
-        {
-            virus->drawDeath();
-        }
-        
-        // draw score
-        eightBitWonder32.drawString(std::to_string(score), 20, camHeight - 30);
-        
-    } else {
-        
-        // magenta color for text
-        ofSetColor(255, 99, 234);
-        
-        // draw game over text
-        eightBitWonder32.drawString("GAME OVER\n\nSCORE " + std::to_string(score), 440, (camHeight / 2) - 48);
-        
     }
 
 }
@@ -336,6 +334,6 @@ void ofApp::gotMessage(ofMessage msg){
 }
 
 //--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
+void ofApp::dragEvent(ofDragInfo dragInfo){
 
 }
