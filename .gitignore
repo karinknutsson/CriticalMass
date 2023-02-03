@@ -1,5 +1,6 @@
 *.make
 *.xcconfig
+*.plist
 .DS_Store
 bin/
 build/
