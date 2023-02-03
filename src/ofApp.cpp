@@ -31,12 +31,7 @@ void ofApp::setup(){
     criticalMass = 12;
 
     // get back a list of devices
-    vector<ofVideoDevice> devices = vidGrabber.listDevices();
-
-    // set device id to first one found & initialize
-    vidGrabber.setDeviceID(0);
-    vidGrabber.setDesiredFrameRate(30);
-    vidGrabber.initGrabber(camWidth, camHeight);
+    devices = vidGrabber.listDevices();
 
     // load sounds and fonts
     virusKillSound.load("arcade-sound.wav");
@@ -60,10 +55,10 @@ void ofApp::update(){
     // needed for video not to have magenta tint
     ofSetColor(255);
 
-    // wait to start game until camera is on
+    // wait to start until camera is on
     if (!startGame && vidGrabber.isFrameNew()) {
-        startGame = true;
-        countDownStartTime = ofGetElapsedTimef();
+        // startGame = true;
+        // countDownStartTime = ofGetElapsedTimef();
     }
 
     // start game after count down
@@ -208,7 +203,28 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 
-    if (startGame) {
+    if (!startGame) {
+
+        for (int i = 0; i < devices.size(); i++) {
+            vidGrabber.setDeviceID(i);
+            vidGrabber.initGrabber(camWidth, camHeight);
+            if (vidGrabber.isFrameNew()) {
+                ofImage img;
+                img.setFromPixels(vidGrabber.getPixels());
+                
+                
+                deviceImages.push_back(img);
+            }
+        }
+
+        for (int i = 0; i < deviceImages.size(); i++) {
+            deviceImages.at(i).draw(0 + i * (camWidth / 3), camHeight / 3, camWidth / 3, camHeight / 3);
+        }
+
+        vidGrabber.setDesiredFrameRate(30);
+        vidGrabber.initGrabber(camWidth, camHeight);
+        
+    } else {
 
         if (countDown) {
 

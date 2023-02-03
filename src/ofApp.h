@@ -27,6 +27,9 @@ class ofApp : public ofBaseApp{
         // webcam input
         ofVideoGrabber vidGrabber;
 
+				vector<ofVideoDevice> devices;
+				vector<ofImage> deviceImages;
+
         // camera dimensions
         int camWidth;
         int camHeight;
