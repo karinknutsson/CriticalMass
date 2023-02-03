@@ -153,8 +153,9 @@ void ofApp::update(){
                     if (value >= 1.5 && !viruses.empty()) {
 
                         // check if player is within video frame
-                        if (x < 10 || x > 1270 || y < 10 || y > 710) {
+                        if (x < 10 || x > 1270 || y < 10) {
                             withinFrame = false;
+                            goto endOfUpdate;
                         } else {
                             withinFrame = true;
                         }
@@ -205,6 +206,8 @@ void ofApp::update(){
 
     // decrement delay so game gets increasingly more difficult with time
     delay -= decrementDelay;
+
+    endOfUpdate:
 
     // update sound
     ofSoundUpdate();

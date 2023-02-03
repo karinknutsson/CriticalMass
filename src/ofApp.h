@@ -58,15 +58,15 @@ class ofApp : public ofBaseApp{
         // variables to keep track of time & difficulty
         float currentTime;
         float delay;
-				float decrementDelay;
-				int criticalMass;
+		float decrementDelay;
+		int criticalMass;
 
         // sound and text variables
         ofSoundPlayer virusKillSound;
         ofSoundPlayer gameOverSound;
         ofSoundPlayer shortBeep;
         ofSoundPlayer longBeep;
-				ofSoundPlayer soundTrack;
+		ofSoundPlayer soundTrack;
         ofTrueTypeFont eightBitWonder32;
         ofTrueTypeFont eightBitWonder64;
 
@@ -74,9 +74,9 @@ class ofApp : public ofBaseApp{
         bool gameOver;
         bool countDown;
         int score;
-				bool startGame;
-				float countDownStartTime;
-				bool withinFrame;
+		bool startGame;
+		float countDownStartTime;
+		bool withinFrame;
         bool beep1played;
         bool beep2played;
         bool beep3played;
