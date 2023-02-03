@@ -4,6 +4,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 
+    // set up game to start
     gameOver = false;
     countDown = true;
     score = 0;
@@ -11,7 +12,6 @@ void ofApp::setup(){
     camWidth = 1280;
     camHeight = 720;
     currentTime = ofGetElapsedTimeMillis();
-
     beep1played = false;
     beep2played = false;
     beep3played = false;
@@ -22,6 +22,12 @@ void ofApp::setup(){
 
     // delay in milliseconds between each virus
     delay = 1000;
+
+    // with how many milliseconds to decrement delay on each update
+    decrementDelay = 0.5;
+
+    // critical mass for viruses
+    criticalMass = 12;
 
     // get back a list of devices
     vector<ofVideoDevice> devices = vidGrabber.listDevices();
@@ -65,8 +71,8 @@ void ofApp::update(){
     // start game after count down
     if (!countDown && !gameOver) {
 
-        // cutoff for when game is over
-        if (viruses.size() > 12) {
+        // check if critical mass has been reached
+        if (viruses.size() > criticalMass) {
 
             gameOver = true;
             vidGrabber.close();
@@ -162,7 +168,7 @@ void ofApp::update(){
             // add viruses over time
             if (ofGetElapsedTimeMillis() > currentTime + delay) {
 
-                // create viruses and add to container
+                // create viruses of random size and add to container
                 int size = ofRandom(50, 180);
                 viruses.push_back(Virus(ofRandom(ofGetWidth() - size), ofRandom(ofGetHeight() - size * 2), size));
 
@@ -184,7 +190,7 @@ void ofApp::update(){
     }
 
     // decrement delay so game gets increasingly more difficult with time
-    delay -= 1;
+    delay -= decrementDelay;
 }
 
 //--------------------------------------------------------------

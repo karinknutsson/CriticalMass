@@ -55,9 +55,11 @@ class ofApp : public ofBaseApp{
         // dying virus container
         vector<Virus> dyingViruses;
 
-        // variables to keep track of time
-        int currentTime;
-        int delay;
+        // variables to keep track of time & difficulty
+        float currentTime;
+        float delay;
+				float decrementDelay;
+				int criticalMass;
 
         // sound and text variables
         ofSoundPlayer virusKillSound;
