@@ -67,7 +67,7 @@ class ofApp : public ofBaseApp{
         ofSoundPlayer shortBeep;
         ofSoundPlayer longBeep;
         ofTrueTypeFont eightBitWonder32;
-        ofTrueTypeFont eightBitWonder48;
+        ofTrueTypeFont eightBitWonder64;
 
         // game variables
         bool gameOver;

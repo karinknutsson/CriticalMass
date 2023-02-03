@@ -44,7 +44,7 @@ void ofApp::setup(){
     shortBeep.load("short-beep.mp3");
     longBeep.load("long-beep.mp3");
     eightBitWonder32.load("8-bit-wonder.ttf", 32, true, true);
-    eightBitWonder48.load("8-bit-wonder.ttf", 48, true, true);
+    eightBitWonder64.load("8-bit-wonder.ttf", 64, true, true);
 
 }
 
@@ -219,7 +219,7 @@ void ofApp::draw(){
                     beep1played = true;
                 }
 
-                eightBitWonder48.drawString("1", (camWidth / 2) - 48, (camHeight / 2) - 48);
+                eightBitWonder64.drawString("1", (camWidth / 2) - 48, (camHeight / 2) - 16);
 
             } else if (elapsedTime < 2) {
 
@@ -228,7 +228,7 @@ void ofApp::draw(){
                     beep2played = true;
                 }
 
-                eightBitWonder48.drawString("2", (camWidth / 2) - 48, (camHeight / 2) - 48);
+                eightBitWonder64.drawString("2", (camWidth / 2) - 48, (camHeight / 2) - 16);
 
             } else if (elapsedTime < 3) {
 
@@ -237,7 +237,7 @@ void ofApp::draw(){
                     beep3played = true;
                 }
 
-                eightBitWonder48.drawString("3", (camWidth / 2) - 48, (camHeight / 2) - 48);
+                eightBitWonder64.drawString("3", (camWidth / 2) - 48, (camHeight / 2) - 16);
 
             }
             else if (elapsedTime < 5) {
@@ -247,7 +247,7 @@ void ofApp::draw(){
                     longBeepPlayed = true;
                 }
 
-                eightBitWonder48.drawString("GET READY", (camWidth / 2) - 360, (camHeight / 2) - 48);
+                eightBitWonder64.drawString("GET READY", (camWidth / 2) - 360, (camHeight / 2) - 16);
 
             } else {
 
