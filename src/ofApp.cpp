@@ -43,6 +43,9 @@ void ofApp::setup(){
     gameOverSound.load("game-over.wav");
     shortBeep.load("short-beep.mp3");
     longBeep.load("long-beep.mp3");
+    soundTrack.load("hubbard-commando.mp3");
+    soundTrack.setVolume(0.5);
+    soundTrack.setLoop(true);
     eightBitWonder32.load("8-bit-wonder.ttf", 32, true, true);
     eightBitWonder64.load("8-bit-wonder.ttf", 64, true, true);
 
@@ -50,9 +53,6 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
-    // update sound
-    ofSoundUpdate();
 
     // update camera input
     vidGrabber.update();
@@ -71,11 +71,17 @@ void ofApp::update(){
     // start game after count down
     if (!countDown && !gameOver) {
 
+        // play music
+        if (!soundTrack.isPlaying()) {
+          soundTrack.play();
+        }
+
         // check if critical mass has been reached
         if (viruses.size() > criticalMass) {
 
             gameOver = true;
             vidGrabber.close();
+            soundTrack.setPaused(true);
             gameOverSound.play();
 
         }
@@ -191,6 +197,9 @@ void ofApp::update(){
 
     // decrement delay so game gets increasingly more difficult with time
     delay -= decrementDelay;
+
+    // update sound
+    ofSoundUpdate();
 }
 
 //--------------------------------------------------------------

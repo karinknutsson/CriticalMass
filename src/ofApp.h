@@ -66,6 +66,7 @@ class ofApp : public ofBaseApp{
         ofSoundPlayer gameOverSound;
         ofSoundPlayer shortBeep;
         ofSoundPlayer longBeep;
+				ofSoundPlayer soundTrack;
         ofTrueTypeFont eightBitWonder32;
         ofTrueTypeFont eightBitWonder64;
 
