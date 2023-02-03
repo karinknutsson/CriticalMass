@@ -76,6 +76,7 @@ class ofApp : public ofBaseApp{
         int score;
 				bool startGame;
 				float countDownStartTime;
+				bool withinFrame;
         bool beep1played;
         bool beep2played;
         bool beep3played;

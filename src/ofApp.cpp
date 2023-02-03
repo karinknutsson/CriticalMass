@@ -9,6 +9,7 @@ void ofApp::setup(){
     countDown = true;
     score = 0;
     startGame = false;
+    withinFrame = true;
     camWidth = 1280;
     camHeight = 720;
     currentTime = ofGetElapsedTimeMillis();
@@ -151,6 +152,13 @@ void ofApp::update(){
                     // cutoff value for movement
                     if (value >= 1.5 && !viruses.empty()) {
 
+                        // check if player is within video frame
+                        if (x < 10 || x > 1270 || y < 10 || y > 710) {
+                            withinFrame = false;
+                        } else {
+                            withinFrame = true;
+                        }
+
                         // iterate through all viruses
                         for (int i = viruses.size() - 1; i >= 0; i--) {
 
@@ -172,7 +180,7 @@ void ofApp::update(){
             }
 
             // add viruses over time
-            if (ofGetElapsedTimeMillis() > currentTime + delay) {
+            if (withinFrame && ofGetElapsedTimeMillis() > currentTime + delay) {
 
                 // create viruses of random size and add to container
                 int size = ofRandom(50, 180);
@@ -263,6 +271,18 @@ void ofApp::draw(){
                 countDown = false;
 
             }
+
+        } else if (!withinFrame) {
+
+                // magenta color tint
+                ofSetColor(255, 99, 234);
+
+                // draw mirrored webcam input
+                vidGrabber.draw(camWidth, 0, -camWidth, camHeight);
+
+                // white text
+                ofSetColor(255);
+                eightBitWonder32.drawString("PLEASE MOVE BACK WITHIN FRAME", 50, (camHeight / 2) - 24);
 
         } else if (!gameOver) {
 
