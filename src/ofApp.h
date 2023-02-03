@@ -11,7 +11,7 @@ class ofApp : public ofBaseApp{
 		void setup();
 		void update();
 		void draw();
-    
+
 		void keyPressed(int key);
 		void keyReleased(int key);
 		void mouseMoved(int x, int y );
@@ -23,49 +23,60 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-    
+
         // webcam input
         ofVideoGrabber vidGrabber;
-    
+
         // camera dimensions
         int camWidth;
         int camHeight;
-        
+
         // current video frame
         ofxCvColorImage image;
-    
+
         // current video frame in grayscale
         ofxCvGrayscaleImage grayImage;
-    
+
         // previous video frame in grayscale
         ofxCvGrayscaleImage grayImagePrev;
-    
+
         // absolute difference of current and previous frame
         ofxCvGrayscaleImage diff;
-    
+
         // amplified difference of current and previous frame
         ofxCvFloatImage diffFloat;
-    
+
         // buffer image: stores all differences in movement, with damping
         ofxCvFloatImage bufferFloat;
-    
+
         // virus container
         vector<Virus> viruses;
-    
+
         // dying virus container
         vector<Virus> dyingViruses;
-    
-        // variables to keep track of time
-        int currTime;
-        int delay;
-    
+
+        // variables to keep track of time & difficulty
+        float currentTime;
+        float delay;
+				float decrementDelay;
+				int criticalMass;
+
         // sound and text variables
-        ofSoundPlayer sound;
+        ofSoundPlayer virusKillSound;
         ofSoundPlayer gameOverSound;
-        ofTrueTypeFont eightBitWonder;
-    
+        ofSoundPlayer shortBeep;
+        ofSoundPlayer longBeep;
+        ofTrueTypeFont eightBitWonder32;
+        ofTrueTypeFont eightBitWonder64;
+
         // game variables
-        bool gameStart;
         bool gameOver;
+        bool countDown;
         int score;
+				bool startGame;
+				float countDownStartTime;
+        bool beep1played;
+        bool beep2played;
+        bool beep3played;
+        bool longBeepPlayed;
 };
