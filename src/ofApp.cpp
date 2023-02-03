@@ -152,8 +152,8 @@ void ofApp::update(){
                     // cutoff value for movement
                     if (value >= 1.5 && !viruses.empty()) {
 
-                        // check if player is within video frame
-                        if (x < 10 || x > 1270 || y < 10 || y > 710) {
+                        // check if player is within video frame (cutoff: 10 pixels)
+                        if (x < 10 || x > 1270 || y < 10) {
                             withinFrame = false;
                         } else {
                             withinFrame = true;
