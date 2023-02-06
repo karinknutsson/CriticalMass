@@ -297,25 +297,24 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
 
-  if (key == 32) {
+    if (key == 32) {
 
-    vidGrabber.close();
-    int nextDeviceId = currentDeviceId + 1;
-    
-    if (nextDeviceId >= devices.size()) {
-        vidGrabber.setDeviceID(0);
-        currentDeviceId = 0;
-    } else {
-        vidGrabber.setDeviceID(nextDeviceId);
-        currentDeviceId = nextDeviceId;
+        // stop video grabbing & set next device id
+        vidGrabber.close();
+        int nextDeviceId = currentDeviceId + 1;
+
+        if (nextDeviceId >= devices.size()) {
+            vidGrabber.setDeviceID(0);
+            currentDeviceId = 0;
+        } else {
+            vidGrabber.setDeviceID(nextDeviceId);
+            currentDeviceId = nextDeviceId;
+        }
+
+        // initialize video grabber with updated webcam input
+        vidGrabber.setDesiredFrameRate(30);
+        vidGrabber.initGrabber(camWidth, camHeight);
     }
-
-    vidGrabber.setDesiredFrameRate(30);
-    vidGrabber.initGrabber(camWidth, camHeight);
-  }
-
-
-
 }
 
 //--------------------------------------------------------------

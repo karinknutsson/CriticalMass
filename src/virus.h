@@ -25,13 +25,12 @@ class Virus {
             shrink = false;
             
             img.load("virus.png");
-            
         }
     
         void draw() {
             
+            // draw virus
             img.draw(x, y, s, s);
-            
         }
     
         void drawDeath() {
@@ -40,42 +39,31 @@ class Virus {
                 
                 // at first, the virus will grow, until it reaches 60% of its volume
                 if (resizeFactor < 1.5) {
-                    
                     int xAdjusted = x - s * (resizeFactor - 1) / 2;
                     int yAdjusted = y - s * (resizeFactor - 1) / 2;
                     img.draw(xAdjusted, yAdjusted, s * resizeFactor, s * resizeFactor);
                     resizeFactor += 0.2;
-                    
                 } else {
-                    
                     shrink = true;
-                    
                 }
-                
             } else {
                 
+                // now the virus will shrink until it is invisible
                 int xAdjusted;
                 int yAdjusted;
                 
+                // we need different calculations depending on the current resize factor
                 if (resizeFactor > 1) {
-                    
                     xAdjusted = x - s * (resizeFactor - 1) / 2;
                     yAdjusted = y - s * (resizeFactor - 1) / 2;
-                    
                 } else {
-                    
                     xAdjusted = x + (s - s * resizeFactor) / 2;
                     yAdjusted = y + (s - s * resizeFactor) / 2;
-                    
                 }
                 
+                // draw & shrink virus
                 img.draw(xAdjusted, yAdjusted, s * resizeFactor, s * resizeFactor);
-                
-                // now the virus will shrink, until it is no longer visible
                 resizeFactor -= 0.2;
-                
             }
-            
         }
-    
 };

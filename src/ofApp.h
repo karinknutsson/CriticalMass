@@ -24,10 +24,10 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
-        // webcam input
+        // webcam input properties
         ofVideoGrabber vidGrabber;
-				vector<ofVideoDevice> devices;
-				int currentDeviceId;
+		vector<ofVideoDevice> devices;
+		int currentDeviceId;
 
         // camera dimensions
         int camWidth;
@@ -63,7 +63,7 @@ class ofApp : public ofBaseApp{
 		float decrementDelay;
 		int criticalMass;
 
-        // sound and text variables
+        // sound and text properties
         ofSoundPlayer virusKillSound;
         ofSoundPlayer gameOverSound;
         ofSoundPlayer shortBeep;
@@ -72,7 +72,7 @@ class ofApp : public ofBaseApp{
         ofTrueTypeFont eightBitWonder32;
         ofTrueTypeFont eightBitWonder64;
 
-        // game variables
+        // game properties
         bool gameOver;
         bool countDown;
         int score;
