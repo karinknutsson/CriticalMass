@@ -223,22 +223,26 @@ void ofApp::draw(){
             // set white color for text
             ofSetColor(255);
 
+            // keep track of elapsed time since countdown started
             float elapsedTime = ofGetElapsedTimef() - countDownStartTime;
 
-            // draw countdown & play sounds
+            // draw countdown & play beep sounds
             if (elapsedTime < 1) {
+                
                 if (!beep1played) {
                     shortBeep.play();
                     beep1played = true;
                 }
                 eightBitWonder64.drawString("1", (camWidth / 2) - 48, (camHeight / 2));
             } else if (elapsedTime < 2) {
+                
                 if (!beep2played) {
                     shortBeep.play();
                     beep2played = true;
                 }
                 eightBitWonder64.drawString("2", (camWidth / 2) - 48, (camHeight / 2));
             } else if (elapsedTime < 3) {
+                
                 if (!beep3played) {
                     shortBeep.play();
                     beep3played = true;
@@ -246,12 +250,14 @@ void ofApp::draw(){
                 eightBitWonder64.drawString("3", (camWidth / 2) - 48, (camHeight / 2));
             }
             else if (elapsedTime < 5) {
+                
                 if (!longBeepPlayed) {
                     longBeep.play();
                     longBeepPlayed = true;
                 }
                 eightBitWonder64.drawString("GET READY", (camWidth / 2) - 360, (camHeight / 2));
             } else {
+                
                 countDown = false;
             }
         } else if (!withinFrame) {
