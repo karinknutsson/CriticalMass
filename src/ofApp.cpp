@@ -298,13 +298,23 @@ void ofApp::draw(){
 void ofApp::keyPressed(int key){
 
   if (key == 32) {
+
+    vidGrabber.close();
     int nextDeviceId = currentDeviceId + 1;
+    
     if (nextDeviceId >= devices.size()) {
-      vidGrabber.setDeviceID(0);
+        vidGrabber.setDeviceID(0);
+        currentDeviceId = 0;
     } else {
-      vidGrabber.setDeviceID(nextDeviceId);
+        vidGrabber.setDeviceID(nextDeviceId);
+        currentDeviceId = nextDeviceId;
     }
+
+    vidGrabber.setDesiredFrameRate(30);
+    vidGrabber.initGrabber(camWidth, camHeight);
   }
+
+
 
 }
 
