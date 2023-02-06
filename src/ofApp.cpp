@@ -31,12 +31,13 @@ void ofApp::setup(){
     criticalMass = 12;
 
     // get back a list of devices
-    vector<ofVideoDevice> devices = vidGrabber.listDevices();
+    devices = vidGrabber.listDevices();
 
     // set device id to first one found & initialize
     vidGrabber.setDeviceID(0);
     vidGrabber.setDesiredFrameRate(30);
     vidGrabber.initGrabber(camWidth, camHeight);
+    currentDeviceId = 0;
 
     // load sounds and fonts
     virusKillSound.load("arcade-sound.wav");
@@ -295,6 +296,15 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+
+  if (key == 32) {
+    int nextDeviceId = currentDeviceId + 1;
+    if (nextDeviceId >= devices.size()) {
+      vidGrabber.setDeviceID(0);
+    } else {
+      vidGrabber.setDeviceID(nextDeviceId);
+    }
+  }
 
 }
 
