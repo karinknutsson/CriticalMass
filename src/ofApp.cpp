@@ -297,7 +297,7 @@ void ofApp::draw(){
 
             // draw game over text
             eightBitWonder32.drawString("GAME OVER\n\nSCORE " + std::to_string(score), 440, (camHeight / 2) - 48);
-            eightBitWonder12.drawString("PRESS ENTER TO RESTART", 440, (camHeight / 2) + 120);
+            eightBitWonder12.drawString("PRESS ENTER TO START OVER", 440, (camHeight / 2) + 120);
         }
     }
 }
