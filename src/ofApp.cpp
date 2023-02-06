@@ -48,6 +48,7 @@ void ofApp::setup(){
     soundTrack.load("hubbard-commando.mp3");
     soundTrack.setVolume(0.5);
     soundTrack.setLoop(true);
+    eightBitWonder12.load("8-bit-wonder.ttf", 12, true, true);
     eightBitWonder32.load("8-bit-wonder.ttf", 32, true, true);
     eightBitWonder64.load("8-bit-wonder.ttf", 64, true, true);
 }
@@ -230,26 +231,26 @@ void ofApp::draw(){
                     shortBeep.play();
                     beep1played = true;
                 }
-                eightBitWonder64.drawString("1", (camWidth / 2) - 48, (camHeight / 2) - 16);
+                eightBitWonder64.drawString("1", (camWidth / 2) - 48, (camHeight / 2));
             } else if (elapsedTime < 2) {
                 if (!beep2played) {
                     shortBeep.play();
                     beep2played = true;
                 }
-                eightBitWonder64.drawString("2", (camWidth / 2) - 48, (camHeight / 2) - 16);
+                eightBitWonder64.drawString("2", (camWidth / 2) - 48, (camHeight / 2));
             } else if (elapsedTime < 3) {
                 if (!beep3played) {
                     shortBeep.play();
                     beep3played = true;
                 }
-                eightBitWonder64.drawString("3", (camWidth / 2) - 48, (camHeight / 2) - 16);
+                eightBitWonder64.drawString("3", (camWidth / 2) - 48, (camHeight / 2));
             }
             else if (elapsedTime < 5) {
                 if (!longBeepPlayed) {
                     longBeep.play();
                     longBeepPlayed = true;
                 }
-                eightBitWonder64.drawString("GET READY", (camWidth / 2) - 360, (camHeight / 2) - 16);
+                eightBitWonder64.drawString("GET READY", (camWidth / 2) - 360, (camHeight / 2));
             } else {
                 countDown = false;
             }
@@ -263,7 +264,7 @@ void ofApp::draw(){
 
                 // white text
                 ofSetColor(255);
-                eightBitWonder32.drawString("PLEASE MOVE BACK WITHIN FRAME", 50, (camHeight / 2) - 24);
+                eightBitWonder32.drawString("PLEASE MOVE BACK WITHIN FRAME", 52, (camHeight / 2) - 24);
         } else if (!gameOver) {
 
             // draw mirrored webcam input
@@ -290,6 +291,7 @@ void ofApp::draw(){
 
             // draw game over text
             eightBitWonder32.drawString("GAME OVER\n\nSCORE " + std::to_string(score), 440, (camHeight / 2) - 48);
+            eightBitWonder12.drawString("PRESS ENTER TO RESTART", 440, (camHeight / 2) + 120);
         }
     }
 }

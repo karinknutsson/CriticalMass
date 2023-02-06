@@ -51,13 +51,11 @@ class ofApp : public ofBaseApp{
         // buffer image: stores all differences in movement, with damping
         ofxCvFloatImage bufferFloat;
 
-        // virus container
+        // virus containers
         vector<Virus> viruses;
-
-        // dying virus container
         vector<Virus> dyingViruses;
 
-        // variables to keep track of time & difficulty
+        // properties to keep track of time & difficulty
         float currentTime;
         float delay;
 		float decrementDelay;
@@ -69,6 +67,7 @@ class ofApp : public ofBaseApp{
         ofSoundPlayer shortBeep;
         ofSoundPlayer longBeep;
 		ofSoundPlayer soundTrack;
+        ofTrueTypeFont eightBitWonder12;
         ofTrueTypeFont eightBitWonder32;
         ofTrueTypeFont eightBitWonder64;
 
