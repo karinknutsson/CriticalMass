@@ -79,7 +79,7 @@ void ofApp::update(){
         if (viruses.size() > criticalMass) {
             gameOver = true;
             vidGrabber.close();
-            soundTrack.setPaused(true);
+            soundTrack.stop();
             gameOverSound.play();
         }
 
@@ -297,6 +297,7 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
 
+    // space bar changes webcam input
     if (key == 32) {
 
         // stop video grabbing & set next device id
@@ -312,6 +313,36 @@ void ofApp::keyPressed(int key){
         }
 
         // initialize video grabber with updated webcam input
+        vidGrabber.setDesiredFrameRate(30);
+        vidGrabber.initGrabber(camWidth, camHeight);
+    }
+    
+    // enter key resets game
+    if (gameOver && key == OF_KEY_RETURN) {
+        
+        // set up game to start over
+        gameOver = false;
+        countDown = true;
+        score = 0;
+        startGame = false;
+        withinFrame = true;
+        camWidth = 1280;
+        camHeight = 720;
+        currentTime = ofGetElapsedTimeMillis();
+        beep1played = false;
+        beep2played = false;
+        beep3played = false;
+        longBeepPlayed = false;
+        
+        // reset delay
+        delay = 1000;
+        
+        // clear viruses
+        viruses.clear();
+        dyingViruses.clear();
+        
+        // start video grabber
+        vidGrabber.setDeviceID(currentDeviceId);
         vidGrabber.setDesiredFrameRate(30);
         vidGrabber.initGrabber(camWidth, camHeight);
     }

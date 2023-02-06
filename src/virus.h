@@ -19,7 +19,7 @@ class Virus {
         Virus(int xPos, int yPos, int size){
             
             x = xPos;
-            y = yPos;
+            y = yPos + 20;
             s = size;
             resizeFactor = 1.0;
             shrink = false;
