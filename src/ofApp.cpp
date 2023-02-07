@@ -229,8 +229,8 @@ void ofApp::draw(){
             ofSetColor(255);
 
             // draw webcam input instructions
-            textWidth = eightBitWonder12.stringWidth("PRESS SPACE BAR TO CHOOSE ANOTHER WEBCAM INPUT");
-            eightBitWonder12.drawString("PRESS SPACE BAR TO CHANGE WEBCAM INPUT", (camWidth / 2) - (textWidth / 2), camHeight - 32);
+            textWidth = eightBitWonder12.stringWidth("PRESS SPACE BAR TO CHOOSE ANOTHER WEBCAM");
+            eightBitWonder12.drawString("PRESS SPACE BAR TO CHOOSE ANOTHER WEBCAM", (camWidth / 2) - (textWidth / 2), camHeight - 32);
 
             // keep track of elapsed time since countdown started
             float elapsedTime = ofGetElapsedTimef() - countDownStartTime;
