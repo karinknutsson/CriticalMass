@@ -28,7 +28,7 @@ void ofApp::setup(){
     decrementDelay = 0.5;
 
     // critical mass for viruses
-    criticalMass = 24;
+    criticalMass = 16;
 
     // get back a list of devices
     devices = vidGrabber.listDevices();
@@ -151,7 +151,7 @@ void ofApp::update(){
                         // check if player is within video frame
                         if (x < 10 || x > 1270 || y < 10) {
                             withinFrame = false;
-                            score -= 10000;
+                            score = 0;
                             goto endOfUpdate;
                         } else {
                             withinFrame = true;
