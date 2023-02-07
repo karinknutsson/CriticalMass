@@ -59,9 +59,6 @@ void ofApp::update(){
     // update camera input
     vidGrabber.update();
 
-    // needed for video not to have magenta tint
-    ofSetColor(255);
-
     // wait to start game until camera is on
     if (!startGame && vidGrabber.isFrameNew()) {
         startGame = true;
@@ -234,7 +231,8 @@ void ofApp::draw(){
                     beep1played = true;
                 }
                 textWidth = eightBitWonder64.stringWidth("1");
-                eightBitWonder64.drawString("1", (camWidth / 2) - (textWidth / 2), (camHeight / 2));
+                textHeight = eightBitWonder64.stringHeight("1");
+                eightBitWonder64.drawString("1", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
             } else if (elapsedTime < 2) {
 
                 if (!beep2played) {
@@ -242,7 +240,7 @@ void ofApp::draw(){
                     beep2played = true;
                 }
                 textWidth = eightBitWonder64.stringWidth("2");
-                eightBitWonder64.drawString("2", (camWidth / 2) - (textWidth / 2), (camHeight / 2));
+                eightBitWonder64.drawString("2", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
             } else if (elapsedTime < 3) {
 
                 if (!beep3played) {
@@ -250,7 +248,7 @@ void ofApp::draw(){
                     beep3played = true;
                 }
                 textWidth = eightBitWonder64.stringWidth("3");
-                eightBitWonder64.drawString("3", (camWidth / 2) - (textWidth / 2), (camHeight / 2));
+                eightBitWonder64.drawString("3", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
             }
             else if (elapsedTime < 5) {
 
@@ -259,7 +257,7 @@ void ofApp::draw(){
                     longBeepPlayed = true;
                 }
                 textWidth = eightBitWonder64.stringWidth("GET READY");
-                eightBitWonder64.drawString("GET READY", (camWidth / 2) - (textWidth / 2), (camHeight / 2));
+                eightBitWonder64.drawString("GET READY", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
             } else {
 
                 countDown = false;
@@ -276,8 +274,11 @@ void ofApp::draw(){
                 ofSetColor(255);
                 textWidth = eightBitWonder32.stringWidth("PLEASE MOVE BACK WITHIN FRAME");
                 textHeight = eightBitWonder32.stringHeight("PLEASE MOVE BACK WITHIN FRAME");
-                eightBitWonder32.drawString("PLEASE MOVE BACK WITHIN FRAME", (camWidth / 2) - (textWidth / 2), (camHeight / 2) - (textHeight / 2));
+                eightBitWonder32.drawString("PLEASE MOVE BACK WITHIN FRAME", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
         } else if (!gameOver) {
+
+            // needed for video to have neutral tint
+            ofSetColor(255);
 
             // draw mirrored webcam input
             vidGrabber.draw(camWidth, 0, -camWidth, camHeight);
@@ -292,9 +293,12 @@ void ofApp::draw(){
                 virus->drawDeath();
             }
 
-            // draw score
+            // draw footer bar with score
+            ofSetColor(255, 99, 234, 175);
+            ofDrawRectangle(0, camHeight - 80, camWidth, 80);
+            ofSetColor(255);
             textWidth = eightBitWonder32.stringWidth(std::to_string(score));
-            eightBitWonder32.drawString(std::to_string(score), camWidth - textWidth - 32, camHeight - 32);
+            eightBitWonder32.drawString(std::to_string(score), camWidth - textWidth - 24, camHeight - 24);
         } else {
 
             // draw game over text
