@@ -51,6 +51,7 @@ void ofApp::setup(){
     eightBitWonder12.load("8-bit-wonder.ttf", 12, true, true);
     eightBitWonder32.load("8-bit-wonder.ttf", 32, true, true);
     eightBitWonder64.load("8-bit-wonder.ttf", 64, true, true);
+    eightBitWonder96.load("8-bit-wonder.ttf", 96, true, true);
 }
 
 //--------------------------------------------------------------
@@ -230,25 +231,25 @@ void ofApp::draw(){
                     shortBeep.play();
                     beep1played = true;
                 }
-                textWidth = eightBitWonder64.stringWidth("1");
-                textHeight = eightBitWonder64.stringHeight("1");
-                eightBitWonder64.drawString("1", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
+                textWidth = eightBitWonder96.stringWidth("1");
+                textHeight = eightBitWonder96.stringHeight("1");
+                eightBitWonder96.drawString("1", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
             } else if (elapsedTime < 2) {
 
                 if (!beep2played) {
                     shortBeep.play();
                     beep2played = true;
                 }
-                textWidth = eightBitWonder64.stringWidth("2");
-                eightBitWonder64.drawString("2", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
+                textWidth = eightBitWonder96.stringWidth("2");
+                eightBitWonder96.drawString("2", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
             } else if (elapsedTime < 3) {
 
                 if (!beep3played) {
                     shortBeep.play();
                     beep3played = true;
                 }
-                textWidth = eightBitWonder64.stringWidth("3");
-                eightBitWonder64.drawString("3", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
+                textWidth = eightBitWonder96.stringWidth("3");
+                eightBitWonder96.drawString("3", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
             }
             else if (elapsedTime < 5) {
 
@@ -256,8 +257,8 @@ void ofApp::draw(){
                     longBeep.play();
                     longBeepPlayed = true;
                 }
-                textWidth = eightBitWonder64.stringWidth("GET READY");
-                eightBitWonder64.drawString("GET READY", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
+                textWidth = eightBitWonder96.stringWidth("GET READY");
+                eightBitWonder96.drawString("GET READY", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
             } else {
 
                 countDown = false;
