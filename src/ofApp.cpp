@@ -28,7 +28,7 @@ void ofApp::setup(){
     decrementDelay = 0.5;
 
     // critical mass for viruses
-    criticalMass = 23;
+    criticalMass = 24;
 
     // get back a list of devices
     devices = vidGrabber.listDevices();
@@ -197,7 +197,9 @@ void ofApp::update(){
     }
 
     // decrement delay so game gets increasingly more difficult with time
-    delay -= decrementDelay;
+    if (delay > 10) {
+        delay -= decrementDelay;
+    }
 
     endOfUpdate:
 
@@ -298,6 +300,7 @@ void ofApp::draw(){
             ofSetColor(255, 99, 234, 175);
             ofDrawRectangle(0, camHeight - 80, camWidth, 80);
             ofSetColor(255);
+            eightBitWonder32.drawString(std::to_string(delay), 24, camHeight - 24);
             textWidth = eightBitWonder32.stringWidth(std::to_string(score));
             eightBitWonder32.drawString(std::to_string(score), camWidth - textWidth - 24, camHeight - 24);
         } else {
