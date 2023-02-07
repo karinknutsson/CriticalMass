@@ -28,7 +28,7 @@ void ofApp::setup(){
     decrementDelay = 0.5;
 
     // critical mass for viruses
-    criticalMass = 12;
+    criticalMass = 23;
 
     // get back a list of devices
     devices = vidGrabber.listDevices();
@@ -257,25 +257,25 @@ void ofApp::draw(){
                     longBeep.play();
                     longBeepPlayed = true;
                 }
-                textWidth = eightBitWonder96.stringWidth("GET READY");
-                eightBitWonder96.drawString("GET READY", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
+                textWidth = eightBitWonder64.stringWidth("GET READY");
+                eightBitWonder64.drawString("GET READY", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
             } else {
 
                 countDown = false;
             }
         } else if (!withinFrame) {
 
-                // magenta color tint
-                ofSetColor(255, 99, 234);
+            // magenta color tint
+            ofSetColor(255, 99, 234);
 
-                // draw mirrored webcam input
-                vidGrabber.draw(camWidth, 0, -camWidth, camHeight);
+            // draw mirrored webcam input
+            vidGrabber.draw(camWidth, 0, -camWidth, camHeight);
 
-                // white text
-                ofSetColor(255);
-                textWidth = eightBitWonder32.stringWidth("PLEASE MOVE BACK WITHIN FRAME");
-                textHeight = eightBitWonder32.stringHeight("PLEASE MOVE BACK WITHIN FRAME");
-                eightBitWonder32.drawString("PLEASE MOVE BACK WITHIN FRAME", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
+            // white text
+            ofSetColor(255);
+            textWidth = eightBitWonder32.stringWidth("GO BACK WITHIN FRAME");
+            textHeight = eightBitWonder32.stringHeight("GO BACK WITHIN FRAME");
+            eightBitWonder32.drawString("GO BACK WITHIN FRAME", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
         } else if (!gameOver) {
 
             // needed for video to have neutral tint
@@ -294,7 +294,7 @@ void ofApp::draw(){
                 virus->drawDeath();
             }
 
-            // draw footer bar with score
+            // draw footer bar
             ofSetColor(255, 99, 234, 175);
             ofDrawRectangle(0, camHeight - 80, camWidth, 80);
             ofSetColor(255);
