@@ -22,10 +22,13 @@ void ofApp::setup(){
     ofBackground(0);
 
     // delay in milliseconds between each virus
-    delay = 1000;
+    delay = 1000.0;
 
     // with how many milliseconds to decrement delay on each update
     decrementDelay = 0.5;
+
+    // delay limit: at what point delay will stop decrementing
+    delayLimit = 100.0;
 
     // critical mass for viruses
     criticalMass = 16;
@@ -199,7 +202,7 @@ void ofApp::update(){
     }
 
     // decrement delay so game gets increasingly more difficult with time
-    if (delay > 50) {
+    if (delay > delayLimit) {
         delay -= decrementDelay;
     }
 
