@@ -287,16 +287,20 @@ void ofApp::draw(){
             }
 
             // draw score
-            float width = eightBitWonder32.stringWidth(std::to_string(score));
-            eightBitWonder32.drawString(std::to_string(score), camWidth - width - 20, camHeight - 30);
+            textWidth = eightBitWonder32.stringWidth(std::to_string(score));
+            eightBitWonder32.drawString(std::to_string(score), camWidth - textWidth - 32, camHeight - 32);
         } else {
 
-            // magenta color for text
-            ofSetColor(255, 99, 234);
-
             // draw game over text
-            eightBitWonder32.drawString("GAME OVER\n\nSCORE " + std::to_string(score), 440, (camHeight / 2) - 48);
-            eightBitWonder12.drawString("PRESS ENTER TO START OVER", 440, (camHeight / 2) + 120);
+            ofSetColor(255, 99, 234);
+            textWidth = eightBitWonder32.stringWidth("GAME OVER");
+            eightBitWonder32.drawString("GAME OVER", (camWidth / 2) - (textWidth / 2), (camHeight / 2) - 48);
+            ofSetColor(255);
+            textWidth = eightBitWonder64.stringWidth(std::to_string(score));
+            eightBitWonder64.drawString(std::to_string(score), (camWidth / 2) - (textWidth / 2), (camHeight / 2) + 64);
+            ofSetColor(255, 99, 234);
+            textWidth = eightBitWonder12.stringWidth("PRESS ENTER TO START OVER");
+            eightBitWonder12.drawString("PRESS ENTER TO START OVER", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + 120);
         }
     }
 }

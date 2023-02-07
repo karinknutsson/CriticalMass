@@ -70,6 +70,7 @@ class ofApp : public ofBaseApp{
         ofTrueTypeFont eightBitWonder12;
         ofTrueTypeFont eightBitWonder32;
         ofTrueTypeFont eightBitWonder64;
+				float textWidth;
 
         // game properties
         bool gameOver;
