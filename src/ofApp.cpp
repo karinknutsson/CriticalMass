@@ -178,8 +178,8 @@ void ofApp::update(){
             if (withinFrame && ofGetElapsedTimeMillis() > currentTime + delay) {
 
                 // create viruses of random size and add to container
-                int size = ofRandom(50, 180);
-                viruses.push_back(Virus(ofRandom(ofGetWidth() - size), ofRandom(ofGetHeight() - size * 2), size));
+                int size = ofRandom(70, 180);
+                viruses.push_back(Virus(ofRandom(ofGetWidth() - size - 20), ofRandom(ofGetHeight() - size - 80), size));
 
                 // reset current time
                 currentTime = ofGetElapsedTimeMillis();
