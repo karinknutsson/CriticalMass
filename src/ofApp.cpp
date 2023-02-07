@@ -51,6 +51,7 @@ void ofApp::setup(){
     eightBitWonder12.load("8-bit-wonder.ttf", 12, true, true);
     eightBitWonder32.load("8-bit-wonder.ttf", 32, true, true);
     eightBitWonder64.load("8-bit-wonder.ttf", 64, true, true);
+    eightBitWonder96.load("8-bit-wonder.ttf", 96, true, true);
 }
 
 //--------------------------------------------------------------
@@ -58,9 +59,6 @@ void ofApp::update(){
 
     // update camera input
     vidGrabber.update();
-
-    // needed for video not to have magenta tint
-    ofSetColor(255);
 
     // wait to start game until camera is on
     if (!startGame && vidGrabber.isFrameNew()) {
@@ -228,36 +226,41 @@ void ofApp::draw(){
 
             // draw countdown & play beep sounds
             if (elapsedTime < 1) {
-                
+
                 if (!beep1played) {
                     shortBeep.play();
                     beep1played = true;
                 }
-                eightBitWonder64.drawString("1", (camWidth / 2) - 48, (camHeight / 2));
+                textWidth = eightBitWonder96.stringWidth("1");
+                textHeight = eightBitWonder96.stringHeight("1");
+                eightBitWonder96.drawString("1", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
             } else if (elapsedTime < 2) {
-                
+
                 if (!beep2played) {
                     shortBeep.play();
                     beep2played = true;
                 }
-                eightBitWonder64.drawString("2", (camWidth / 2) - 48, (camHeight / 2));
+                textWidth = eightBitWonder96.stringWidth("2");
+                eightBitWonder96.drawString("2", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
             } else if (elapsedTime < 3) {
-                
+
                 if (!beep3played) {
                     shortBeep.play();
                     beep3played = true;
                 }
-                eightBitWonder64.drawString("3", (camWidth / 2) - 48, (camHeight / 2));
+                textWidth = eightBitWonder96.stringWidth("3");
+                eightBitWonder96.drawString("3", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
             }
             else if (elapsedTime < 5) {
-                
+
                 if (!longBeepPlayed) {
                     longBeep.play();
                     longBeepPlayed = true;
                 }
-                eightBitWonder64.drawString("GET READY", (camWidth / 2) - 360, (camHeight / 2));
+                textWidth = eightBitWonder96.stringWidth("GET READY");
+                eightBitWonder96.drawString("GET READY", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
             } else {
-                
+
                 countDown = false;
             }
         } else if (!withinFrame) {
@@ -270,34 +273,45 @@ void ofApp::draw(){
 
                 // white text
                 ofSetColor(255);
-                eightBitWonder32.drawString("PLEASE MOVE BACK WITHIN FRAME", 52, (camHeight / 2) - 24);
+                textWidth = eightBitWonder32.stringWidth("PLEASE MOVE BACK WITHIN FRAME");
+                textHeight = eightBitWonder32.stringHeight("PLEASE MOVE BACK WITHIN FRAME");
+                eightBitWonder32.drawString("PLEASE MOVE BACK WITHIN FRAME", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
         } else if (!gameOver) {
+
+            // needed for video to have neutral tint
+            ofSetColor(255);
 
             // draw mirrored webcam input
             vidGrabber.draw(camWidth, 0, -camWidth, camHeight);
 
             // draw each living virus
-            for (auto virus = viruses.begin(); virus != viruses.end(); ++virus)
-            {
+            for (auto virus = viruses.begin(); virus != viruses.end(); ++virus) {
                 virus->draw();
             }
 
             // draw each dying virus
-            for (auto virus = dyingViruses.begin(); virus != dyingViruses.end(); ++virus)
-            {
+            for (auto virus = dyingViruses.begin(); virus != dyingViruses.end(); ++virus) {
                 virus->drawDeath();
             }
 
-            // draw score
-            eightBitWonder32.drawString(std::to_string(score), 20, camHeight - 30);
+            // draw footer bar with score
+            ofSetColor(255, 99, 234, 175);
+            ofDrawRectangle(0, camHeight - 80, camWidth, 80);
+            ofSetColor(255);
+            textWidth = eightBitWonder32.stringWidth(std::to_string(score));
+            eightBitWonder32.drawString(std::to_string(score), camWidth - textWidth - 24, camHeight - 24);
         } else {
 
-            // magenta color for text
-            ofSetColor(255, 99, 234);
-
             // draw game over text
-            eightBitWonder32.drawString("GAME OVER\n\nSCORE " + std::to_string(score), 440, (camHeight / 2) - 48);
-            eightBitWonder12.drawString("PRESS ENTER TO START OVER", 440, (camHeight / 2) + 120);
+            ofSetColor(255, 99, 234);
+            textWidth = eightBitWonder32.stringWidth("GAME OVER");
+            eightBitWonder32.drawString("GAME OVER", (camWidth / 2) - (textWidth / 2), (camHeight / 2) - 48);
+            ofSetColor(255);
+            textWidth = eightBitWonder64.stringWidth(std::to_string(score));
+            eightBitWonder64.drawString(std::to_string(score), (camWidth / 2) - (textWidth / 2), (camHeight / 2) + 64);
+            ofSetColor(255, 99, 234);
+            textWidth = eightBitWonder12.stringWidth("PRESS ENTER TO START OVER");
+            eightBitWonder12.drawString("PRESS ENTER TO START OVER", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + 120);
         }
     }
 }
@@ -324,10 +338,10 @@ void ofApp::keyPressed(int key){
         vidGrabber.setDesiredFrameRate(30);
         vidGrabber.initGrabber(camWidth, camHeight);
     }
-    
+
     // enter key resets game
     if (gameOver && key == OF_KEY_RETURN) {
-        
+
         // set up game to start over
         gameOver = false;
         countDown = true;
@@ -341,14 +355,14 @@ void ofApp::keyPressed(int key){
         beep2played = false;
         beep3played = false;
         longBeepPlayed = false;
-        
+
         // reset delay
         delay = 1000;
-        
+
         // clear viruses
         viruses.clear();
         dyingViruses.clear();
-        
+
         // start video grabber
         vidGrabber.setDeviceID(currentDeviceId);
         vidGrabber.setDesiredFrameRate(30);
