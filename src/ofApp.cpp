@@ -46,6 +46,7 @@ void ofApp::setup(){
     shortBeep.load("short-beep.mp3");
     longBeep.load("long-beep.mp3");
     soundTrack.load("hubbard-commando.mp3");
+    soundTrack.setMultiPlay(true);
     soundTrack.setVolume(0.5);
     soundTrack.setLoop(true);
     eightBitWonder12.load("8-bit-wonder.ttf", 12, true, true);
@@ -150,6 +151,7 @@ void ofApp::update(){
                         // check if player is within video frame
                         if (x < 10 || x > 1270 || y < 10) {
                             withinFrame = false;
+                            score -= 10000;
                             goto endOfUpdate;
                         } else {
                             withinFrame = true;
