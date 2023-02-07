@@ -228,21 +228,21 @@ void ofApp::draw(){
 
             // draw countdown & play beep sounds
             if (elapsedTime < 1) {
-                
+
                 if (!beep1played) {
                     shortBeep.play();
                     beep1played = true;
                 }
                 eightBitWonder64.drawString("1", (camWidth / 2) - 48, (camHeight / 2));
             } else if (elapsedTime < 2) {
-                
+
                 if (!beep2played) {
                     shortBeep.play();
                     beep2played = true;
                 }
                 eightBitWonder64.drawString("2", (camWidth / 2) - 48, (camHeight / 2));
             } else if (elapsedTime < 3) {
-                
+
                 if (!beep3played) {
                     shortBeep.play();
                     beep3played = true;
@@ -250,14 +250,14 @@ void ofApp::draw(){
                 eightBitWonder64.drawString("3", (camWidth / 2) - 48, (camHeight / 2));
             }
             else if (elapsedTime < 5) {
-                
+
                 if (!longBeepPlayed) {
                     longBeep.play();
                     longBeepPlayed = true;
                 }
                 eightBitWonder64.drawString("GET READY", (camWidth / 2) - 360, (camHeight / 2));
             } else {
-                
+
                 countDown = false;
             }
         } else if (!withinFrame) {
@@ -277,19 +277,18 @@ void ofApp::draw(){
             vidGrabber.draw(camWidth, 0, -camWidth, camHeight);
 
             // draw each living virus
-            for (auto virus = viruses.begin(); virus != viruses.end(); ++virus)
-            {
+            for (auto virus = viruses.begin(); virus != viruses.end(); ++virus) {
                 virus->draw();
             }
 
             // draw each dying virus
-            for (auto virus = dyingViruses.begin(); virus != dyingViruses.end(); ++virus)
-            {
+            for (auto virus = dyingViruses.begin(); virus != dyingViruses.end(); ++virus) {
                 virus->drawDeath();
             }
 
             // draw score
-            eightBitWonder32.drawString(std::to_string(score), 20, camHeight - 30);
+            float width = eightBitWonder32.stringWidth(std::to_string(score));
+            eightBitWonder32.drawString(std::to_string(score), camWidth - width - 20, camHeight - 30);
         } else {
 
             // magenta color for text
@@ -324,10 +323,10 @@ void ofApp::keyPressed(int key){
         vidGrabber.setDesiredFrameRate(30);
         vidGrabber.initGrabber(camWidth, camHeight);
     }
-    
+
     // enter key resets game
     if (gameOver && key == OF_KEY_RETURN) {
-        
+
         // set up game to start over
         gameOver = false;
         countDown = true;
@@ -341,14 +340,14 @@ void ofApp::keyPressed(int key){
         beep2played = false;
         beep3played = false;
         longBeepPlayed = false;
-        
+
         // reset delay
         delay = 1000;
-        
+
         // clear viruses
         viruses.clear();
         dyingViruses.clear();
-        
+
         // start video grabber
         vidGrabber.setDeviceID(currentDeviceId);
         vidGrabber.setDesiredFrameRate(30);
