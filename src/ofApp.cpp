@@ -166,7 +166,7 @@ void ofApp::update(){
                                 dyingViruses.push_back(viruses.at(i));
                                 viruses.erase(viruses.begin() + i);
                                 virusKillSound.play();
-                                score += 10;
+                                score += (1001 - delay) * 5;
                             }
 
                         }
@@ -197,7 +197,7 @@ void ofApp::update(){
     }
 
     // decrement delay so game gets increasingly more difficult with time
-    if (delay > 10) {
+    if (delay > 50) {
         delay -= decrementDelay;
     }
 
@@ -300,7 +300,6 @@ void ofApp::draw(){
             ofSetColor(255, 99, 234, 175);
             ofDrawRectangle(0, camHeight - 80, camWidth, 80);
             ofSetColor(255);
-            eightBitWonder32.drawString(std::to_string(delay), 24, camHeight - 24);
             textWidth = eightBitWonder32.stringWidth(std::to_string(score));
             eightBitWonder32.drawString(std::to_string(score), camWidth - textWidth - 24, camHeight - 24);
         } else {
