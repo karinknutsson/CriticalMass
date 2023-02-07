@@ -233,21 +233,24 @@ void ofApp::draw(){
                     shortBeep.play();
                     beep1played = true;
                 }
-                eightBitWonder64.drawString("1", (camWidth / 2) - 48, (camHeight / 2));
+                textWidth = eightBitWonder64.stringWidth("1");
+                eightBitWonder64.drawString("1", (camWidth / 2) - (textWidth / 2), (camHeight / 2));
             } else if (elapsedTime < 2) {
 
                 if (!beep2played) {
                     shortBeep.play();
                     beep2played = true;
                 }
-                eightBitWonder64.drawString("2", (camWidth / 2) - 48, (camHeight / 2));
+                textWidth = eightBitWonder64.stringWidth("2");
+                eightBitWonder64.drawString("2", (camWidth / 2) - (textWidth / 2), (camHeight / 2));
             } else if (elapsedTime < 3) {
 
                 if (!beep3played) {
                     shortBeep.play();
                     beep3played = true;
                 }
-                eightBitWonder64.drawString("3", (camWidth / 2) - 48, (camHeight / 2));
+                textWidth = eightBitWonder64.stringWidth("3");
+                eightBitWonder64.drawString("3", (camWidth / 2) - (textWidth / 2), (camHeight / 2));
             }
             else if (elapsedTime < 5) {
 
@@ -255,7 +258,8 @@ void ofApp::draw(){
                     longBeep.play();
                     longBeepPlayed = true;
                 }
-                eightBitWonder64.drawString("GET READY", (camWidth / 2) - 360, (camHeight / 2));
+                textWidth = eightBitWonder64.stringWidth("GET READY");
+                eightBitWonder64.drawString("GET READY", (camWidth / 2) - (textWidth / 2), (camHeight / 2));
             } else {
 
                 countDown = false;
@@ -270,7 +274,9 @@ void ofApp::draw(){
 
                 // white text
                 ofSetColor(255);
-                eightBitWonder32.drawString("PLEASE MOVE BACK WITHIN FRAME", 52, (camHeight / 2) - 24);
+                textWidth = eightBitWonder32.stringWidth("PLEASE MOVE BACK WITHIN FRAME");
+                textHeight = eightBitWonder32.stringHeight("PLEASE MOVE BACK WITHIN FRAME");
+                eightBitWonder32.drawString("PLEASE MOVE BACK WITHIN FRAME", (camWidth / 2) - (textWidth / 2), (camHeight / 2) - (textHeight / 2));
         } else if (!gameOver) {
 
             // draw mirrored webcam input
