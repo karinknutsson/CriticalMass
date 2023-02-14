@@ -31,7 +31,7 @@ void ofApp::setup(){
     delayLimit = 100.0;
 
     // critical mass for viruses
-    criticalMass = 16;
+    criticalMass = 15;
 
     // get back a list of devices
     devices = vidGrabber.listDevices();
