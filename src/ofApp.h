@@ -26,8 +26,8 @@ class ofApp : public ofBaseApp{
 
         // webcam input properties
         ofVideoGrabber vidGrabber;
-		vector<ofVideoDevice> devices;
-		int currentDeviceId;
+				vector<ofVideoDevice> devices;
+				int currentDeviceId;
 
         // camera dimensions
         int camWidth;
@@ -59,6 +59,7 @@ class ofApp : public ofBaseApp{
         float currentTime;
         float delay;
 				float decrementDelay;
+				float delayLimit;
 				int criticalMass;
 
         // sound and text properties

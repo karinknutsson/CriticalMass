@@ -22,13 +22,16 @@ void ofApp::setup(){
     ofBackground(0);
 
     // delay in milliseconds between each virus
-    delay = 1000;
+    delay = 1000.0;
 
     // with how many milliseconds to decrement delay on each update
     decrementDelay = 0.5;
 
+    // delay limit: at what point delay will stop decrementing
+    delayLimit = 100.0;
+
     // critical mass for viruses
-    criticalMass = 12;
+    criticalMass = 15;
 
     // get back a list of devices
     devices = vidGrabber.listDevices();
@@ -46,6 +49,7 @@ void ofApp::setup(){
     shortBeep.load("short-beep.mp3");
     longBeep.load("long-beep.mp3");
     soundTrack.load("hubbard-commando.mp3");
+    soundTrack.setMultiPlay(true);
     soundTrack.setVolume(0.5);
     soundTrack.setLoop(true);
     eightBitWonder12.load("8-bit-wonder.ttf", 12, true, true);
@@ -150,6 +154,7 @@ void ofApp::update(){
                         // check if player is within video frame
                         if (x < 10 || x > 1270 || y < 10) {
                             withinFrame = false;
+                            score = 0;
                             goto endOfUpdate;
                         } else {
                             withinFrame = true;
@@ -166,7 +171,7 @@ void ofApp::update(){
                                 dyingViruses.push_back(viruses.at(i));
                                 viruses.erase(viruses.begin() + i);
                                 virusKillSound.play();
-                                score += 10;
+                                score += (1001 - delay) * 2;
                             }
 
                         }
@@ -178,8 +183,8 @@ void ofApp::update(){
             if (withinFrame && ofGetElapsedTimeMillis() > currentTime + delay) {
 
                 // create viruses of random size and add to container
-                int size = ofRandom(50, 180);
-                viruses.push_back(Virus(ofRandom(ofGetWidth() - size), ofRandom(ofGetHeight() - size * 2), size));
+                int size = ofRandom(70, 180);
+                viruses.push_back(Virus(ofRandom(ofGetWidth() - size - 20), ofRandom(ofGetHeight() - size - 80), size));
 
                 // reset current time
                 currentTime = ofGetElapsedTimeMillis();
@@ -197,7 +202,9 @@ void ofApp::update(){
     }
 
     // decrement delay so game gets increasingly more difficult with time
-    delay -= decrementDelay;
+    if (delay > delayLimit) {
+        delay -= decrementDelay;
+    }
 
     endOfUpdate:
 
@@ -220,6 +227,10 @@ void ofApp::draw(){
 
             // set white color for text
             ofSetColor(255);
+
+            // draw webcam input instructions
+            textWidth = eightBitWonder12.stringWidth("PRESS SPACE BAR TO CHOOSE ANOTHER WEBCAM");
+            eightBitWonder12.drawString("PRESS SPACE BAR TO CHOOSE ANOTHER WEBCAM", (camWidth / 2) - (textWidth / 2), camHeight - 32);
 
             // keep track of elapsed time since countdown started
             float elapsedTime = ofGetElapsedTimef() - countDownStartTime;
@@ -257,25 +268,25 @@ void ofApp::draw(){
                     longBeep.play();
                     longBeepPlayed = true;
                 }
-                textWidth = eightBitWonder96.stringWidth("GET READY");
-                eightBitWonder96.drawString("GET READY", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
+                textWidth = eightBitWonder64.stringWidth("GET READY");
+                eightBitWonder64.drawString("GET READY", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
             } else {
 
                 countDown = false;
             }
         } else if (!withinFrame) {
 
-                // magenta color tint
-                ofSetColor(255, 99, 234);
+            // magenta color tint
+            ofSetColor(255, 99, 234);
 
-                // draw mirrored webcam input
-                vidGrabber.draw(camWidth, 0, -camWidth, camHeight);
+            // draw mirrored webcam input
+            vidGrabber.draw(camWidth, 0, -camWidth, camHeight);
 
-                // white text
-                ofSetColor(255);
-                textWidth = eightBitWonder32.stringWidth("PLEASE MOVE BACK WITHIN FRAME");
-                textHeight = eightBitWonder32.stringHeight("PLEASE MOVE BACK WITHIN FRAME");
-                eightBitWonder32.drawString("PLEASE MOVE BACK WITHIN FRAME", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
+            // white text
+            ofSetColor(255);
+            textWidth = eightBitWonder32.stringWidth("GO BACK WITHIN FRAME");
+            textHeight = eightBitWonder32.stringHeight("GO BACK WITHIN FRAME");
+            eightBitWonder32.drawString("GO BACK WITHIN FRAME", (camWidth / 2) - (textWidth / 2), (camHeight / 2) + (textHeight / 2));
         } else if (!gameOver) {
 
             // needed for video to have neutral tint
@@ -294,10 +305,11 @@ void ofApp::draw(){
                 virus->drawDeath();
             }
 
-            // draw footer bar with score
+            // draw footer bar
             ofSetColor(255, 99, 234, 175);
             ofDrawRectangle(0, camHeight - 80, camWidth, 80);
             ofSetColor(255);
+            eightBitWonder32.drawString("CRITICAL MASS", 24, camHeight - 24);
             textWidth = eightBitWonder32.stringWidth(std::to_string(score));
             eightBitWonder32.drawString(std::to_string(score), camWidth - textWidth - 24, camHeight - 24);
         } else {
