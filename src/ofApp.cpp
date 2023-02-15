@@ -170,11 +170,14 @@ void ofApp::update(){
                             int xMirrored = camWidth - x;
 
                             // if movement is close enough to an virus, it dies
-                            if ((xMirrored > viruses.at(i).x && xMirrored < viruses.at(i).x + viruses.at(i).s) && (y > viruses.at(i).y && y < viruses.at(i).y + viruses.at(i).s)) {
-                                dyingViruses.push_back(viruses.at(i));
-                                viruses.erase(viruses.begin() + i);
-                                virusKillSound.play();
-                                score += (1001 - delay) * 2;
+                            if (xMirrored > viruses.at(i).x / 2 &&
+								xMirrored < (viruses.at(i).x + viruses.at(i).s) / 2 &&
+								y > viruses.at(i).y / 2 &&
+								y < (viruses.at(i).y + viruses.at(i).s) / 2) {
+	                                dyingViruses.push_back(viruses.at(i));
+	                                viruses.erase(viruses.begin() + i);
+	                                virusKillSound.play();
+	                                score += (1001 - delay) * 2;
                             }
 
                         }
