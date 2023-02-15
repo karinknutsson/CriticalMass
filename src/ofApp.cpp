@@ -96,6 +96,9 @@ void ofApp::update(){
             // get pixel data from video and set in image
             image.setFromPixels(vidGrabber.getPixels());
 
+			// resize
+			image.resize(640, 360);
+
             // blur image
             image.blur(11);
 
@@ -152,7 +155,7 @@ void ofApp::update(){
                     if (value >= 1.5 && !viruses.empty()) {
 
                         // check if player is within video frame
-                        if (x < 10 || x > 1270 || y < 10) {
+                        if (x < 5 || x > 635 || y < 5) {
                             withinFrame = false;
                             score = 0;
                             goto endOfUpdate;

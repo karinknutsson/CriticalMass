@@ -26,8 +26,8 @@ class ofApp : public ofBaseApp{
 
         // webcam input properties
         ofVideoGrabber vidGrabber;
-				vector<ofVideoDevice> devices;
-				int currentDeviceId;
+		vector<ofVideoDevice> devices;
+		int currentDeviceId;
 
         // camera dimensions
         int camWidth;
@@ -58,30 +58,30 @@ class ofApp : public ofBaseApp{
         // properties to keep track of time & difficulty
         float currentTime;
         float delay;
-				float decrementDelay;
-				float delayLimit;
-				int criticalMass;
+		float decrementDelay;
+		float delayLimit;
+		int criticalMass;
 
         // sound and text properties
         ofSoundPlayer virusKillSound;
         ofSoundPlayer gameOverSound;
         ofSoundPlayer shortBeep;
         ofSoundPlayer longBeep;
-				ofSoundPlayer soundTrack;
+		ofSoundPlayer soundTrack;
         ofTrueTypeFont eightBitWonder12;
         ofTrueTypeFont eightBitWonder32;
         ofTrueTypeFont eightBitWonder64;
-				ofTrueTypeFont eightBitWonder96;
-				float textWidth;
-				float textHeight;
+		ofTrueTypeFont eightBitWonder96;
+		float textWidth;
+		float textHeight;
 
         // game properties
         bool gameOver;
         bool countDown;
         int score;
-				bool startGame;
-				float countDownStartTime;
-				bool withinFrame;
+		bool startGame;
+		float countDownStartTime;
+		bool withinFrame;
         bool beep1played;
         bool beep2played;
         bool beep3played;
