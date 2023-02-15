@@ -50,7 +50,7 @@ void ofApp::setup(){
     longBeep.load("long-beep.mp3");
     soundTrack.load("hubbard-commando.mp3");
     soundTrack.setMultiPlay(true);
-    soundTrack.setVolume(0.5);
+    soundTrack.setVolume(0.35);
     soundTrack.setLoop(true);
     eightBitWonder12.load("8-bit-wonder.ttf", 12, true, true);
     eightBitWonder32.load("8-bit-wonder.ttf", 32, true, true);
@@ -167,13 +167,13 @@ void ofApp::update(){
                         for (int i = viruses.size() - 1; i >= 0; i--) {
 
                             // since video is mirrored, this needs to be adjusted for when comparing x position
-                            int xMirrored = camWidth - x;
+                            int xMirrored = w / 2 - x;
 
                             // if movement is close enough to an virus, it dies
-                            if (xMirrored > viruses.at(i).x / 2 &&
-								xMirrored < (viruses.at(i).x + viruses.at(i).s) / 2 &&
-								y > viruses.at(i).y / 2 &&
-								y < (viruses.at(i).y + viruses.at(i).s) / 2) {
+                            if (xMirrored * 2 > viruses.at(i).x &&
+								xMirrored * 2 < viruses.at(i).x &&
+								y * 2 > viruses.at(i).y &&
+								y * 2 < viruses.at(i).y + viruses.at(i).s) {
 	                                dyingViruses.push_back(viruses.at(i));
 	                                viruses.erase(viruses.begin() + i);
 	                                virusKillSound.play();
